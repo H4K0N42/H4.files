@@ -1,0 +1,198 @@
+{
+  config,
+  pkgs,
+  unstable,
+  bleeding-edge,
+  dots,
+  ...
+}:
+{
+  # Home Manager needs a bit of information about you and the paths it should
+  # manage.
+  home.username = "hagen";
+  home.homeDirectory = "/home/hagen";
+
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      alias y="z"
+      # echo
+      # fastfetch -s Title:Separator:OS:Host:Kernel:Uptime:Packages:Shell:CPU:GPU:Memory:Swap:Disk:LocalIp:Locale:Break:Colors
+    '';
+  };
+  programs.zoxide = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+  programs.ghostty.enable = true;
+  programs.wofi.enable = false;
+  programs.waybar.enable = true;
+  programs.lutris.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+  home.packages =
+    (with pkgs; [
+      prismlauncher
+      blockbench
+      texliveFull
+      yubioath-flutter
+      cryptomator
+      arduino-ide
+      github-desktop
+      heroic
+      zed-editor
+      zenity
+      cool-retro-term
+      kdePackages.filelight
+      ncdu
+      kdePackages.ark
+      nautilus
+      nautilus-open-any-terminal
+      sushi
+      code-nautilus
+      celluloid
+      tidal-hifi
+      htop
+      playerctl
+      geary
+      kiwix
+      rustup
+      mission-center
+      appimage-run
+      wl-clipboard
+      slurp
+      audacity
+      alsa-utils
+      alsa-lib
+      ffmpeg-full
+      flatpak-builder
+      gcc
+      fzf
+      gitFull
+      wget
+      unzip
+      curl
+      nixd
+      gimp3-with-plugins
+      gimp3Plugins.gmic
+      imagemagick
+      spicetify-cli
+      clipse
+      nemo
+      nemo-fileroller
+      file-roller
+      jq
+      vlc
+      trash-cli
+      xdg-desktop-portal
+      killall
+      pulseaudio
+      scrcpy
+      android-tools
+      grimblast
+      localsend
+      blender
+      chromium
+      element-desktop
+      upscayl
+      obsidian
+      nextcloud-client
+      gnome-calculator
+      simple-scan
+      filezilla
+      burpsuite
+      linux-wallpaperengine
+      helvum
+      kdePackages.kleopatra
+      nomacs
+      protonup-qt
+      dialog
+      freerdp
+      iproute2
+      libnotify
+      netcat-openbsd
+      onlyoffice-desktopeditors
+      gearlever
+      hyprls
+      hyprpaper
+      hyprsunset
+      hyprpicker
+      spotify
+      ###############
+      (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
+    ])
+    ++ [
+      unstable.badlion-client
+      unstable.davinci-resolve
+      (bleeding-edge.discord.override { withVencord = true; })
+    ];
+
+  xdg.desktopEntries.badlion-launcher = {
+    name = "Badlion Launcher";
+    genericName = "Badlion Client";
+    comment = "Launch Badlion via custom script";
+    exec = "bash ${config.home.homeDirectory}/scripts/launch-badlion.sh";
+    terminal = false;
+    type = "Application";
+    categories = [
+      "Game"
+      "Utility"
+    ];
+    icon = "application-x-executable"; # Or a proper icon if you have one
+  };
+
+  # xdg.desktopEntries.modrinth-app = {
+  #   name = "Modrinth Launcher";
+  #   comment = "Modrinth Minecraft Mod Browser";
+  #   exec = "env WEBKIT_DISABLE_COMPOSITING_MODE=1 ModrinthApp";
+  #   terminal = false;
+  #   type = "Application";
+  #   categories = [
+  #     "Game"
+  #     "Utility"
+  #   ];
+  #   icon = "application-x-executable"; # Or a proper icon if you have one
+  # };
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    ".config/ghostty/config".source = "${dots}/config/ghostty";
+    ".config/hypr" = {
+      source = "${dots}/config/hypr";
+      onChange = "/run/current-system/sw/bin/hyprctl reload";
+    };
+    ".themes/".source = "${dots}/themes/";
+    ".icons/".source = "${dots}/icons/";
+  };
+
+  # Home Manager can also manage your environment variables through
+  # 'home.sessionVariables'. These will be explicitly sourced when using a
+  # shell provided by Home Manager. If you don't want to manage your shell
+  # through Home Manager then you have to manually source 'hm-session-vars.sh'
+  # located at either
+  #
+  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+  #
+  # or
+  #
+  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
+  #
+  # or
+  #
+  #  /etc/profiles/per-user/hagen/etc/profile.d/hm-session-vars.sh
+  #
+  home.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = "1";
+    NIXOS_OZONE_WL = "1";
+    TERMINAL = "ghostty";
+  };
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+  home.stateVersion = "25.05"; # Please read the comment before changing.
+}
