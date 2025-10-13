@@ -1,0 +1,8 @@
+[Icon Theme]
+Name=material_design_cursors_dark
+Comment=Custom cursor theme converted from Windows cursors
+
+[Cursor Theme]
+Name=material_design_cursors_dark
+Comment=Custom cursor theme converted from Windows cursors
+Inherits=Adwaita
