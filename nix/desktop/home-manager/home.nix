@@ -159,13 +159,15 @@ in
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
+    ".icons".source = "${dots}/icons";
+    ".themes".source = "${dots}/themes";
+    "scripts".source = "${dots}/scripts";
     ".config/ghostty/config".source = "${dots}/config/ghostty";
     ".config/hypr" = {
       source = "${dots}/config/hypr";
       onChange = "/run/current-system/sw/bin/hyprctl reload";
     };
-    ".themes/".source = "${dots}/themes/";
-    ".icons/".source = "${dots}/icons/";
+
   };
 
   # Home Manager can also manage your environment variables through

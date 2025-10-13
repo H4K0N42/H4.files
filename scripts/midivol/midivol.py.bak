@@ -1,0 +1,86 @@
+import rtmidi
+import subprocess
+import time
+import re
+
+# Set your MIDI CC number and MIDI channel here
+MIDI_CC = 0  # Commonly used for volume faders
+MIDI_CC_BROWSER = 1
+MIDI_CHANNEL = 0  # Channels are 0-indexed
+
+def set_volume(value):
+    # Convert MIDI value (0-127) to percentage (0-100)
+    percent = int(value)
+    subprocess.run(["amixer", "set", "Master", f"{percent}%"], stdout=subprocess.DEVNULL)
+    print(f"Set MASTER volume to {value}%")
+
+def set_zen_volume(volume):
+    try:
+        # Use function attribute as cache
+        if not hasattr(set_zen_volume, "last_stream_id"):
+            set_zen_volume.last_stream_id = None
+            set_zen_volume.last_volume = None
+
+        output = subprocess.check_output(["wpctl", "status"], text=True)
+        print("wpctl called")
+        streams_section = False
+        stream_id = None
+
+        for line in output.splitlines():
+            line = line.rstrip()
+            if "Streams:" in line:
+                streams_section = True
+                continue
+
+            if streams_section and (line.strip() == "" or not line.startswith(" ")):
+                break
+
+            if streams_section:
+                m = re.match(r'^\s*(\d+)\.\s+Zen$', line, re.IGNORECASE)
+                if m:
+                    stream_id = m.group(1)
+                    break
+
+        if stream_id is None:
+            print("Could not find Zen stream in wpctl status.")
+            return
+
+        # Only update if stream id or volume changed
+        if stream_id == set_zen_volume.last_stream_id and volume == set_zen_volume.last_volume:
+            print(f"Stream ID and volume unchanged ({stream_id}, {volume}%), skipping volume set.")
+            return
+
+        subprocess.run(["wpctl", "set-volume", stream_id, str(volume / 100)], check=True)
+
+        set_zen_volume.last_stream_id = stream_id
+        set_zen_volume.last_volume = volume
+
+        print(f"Set Zen volume to {volume}% (Stream ID {stream_id})")
+
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+def midi_callback(event, data=None):
+    message, _ = event
+    if message[0] == 0xB0 + MIDI_CHANNEL:
+        if message[1] == MIDI_CC:
+            set_volume(message[2])
+        elif message[1] == MIDI_CC_BROWSER:
+            set_zen_volume(message[2])
+
+
+midi_in = rtmidi.MidiIn()
+midi_in.open_port(1)
+midi_in.set_callback(midi_callback)
+
+print("Listening for MIDI CC... Press Ctrl+C to exit.")
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    print("Exiting.")
+finally:
+    midi_in.close_port()
