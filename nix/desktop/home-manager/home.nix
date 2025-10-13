@@ -3,9 +3,11 @@
   pkgs,
   unstable,
   bleeding-edge,
-  dots,
   ...
 }:
+let
+  dots = builtins.toPath ../../..;
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

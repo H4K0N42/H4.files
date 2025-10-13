@@ -10,7 +10,6 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dots.url = "git+file:///home/hagen/H4.files";
   };
 
   outputs =
@@ -19,7 +18,6 @@
       home-manager,
       nixpkgs-unstable,
       nixpkgs-bleeding-edge,
-      dots,
       ...
     }:
     let
@@ -42,7 +40,7 @@
         inherit pkgs;
         modules = [ ./home.nix ];
         extraSpecialArgs = {
-          inherit unstable bleeding-edge dots;
+          inherit unstable bleeding-edge;
         };
       };
     };
