@@ -167,7 +167,7 @@ in
       source = "${dots}/config/hypr";
       onChange = "/run/current-system/sw/bin/hyprctl reload";
     };
-
+    ".config/waybar".source = "${dots}/config/waybar";
   };
 
   # Home Manager can also manage your environment variables through

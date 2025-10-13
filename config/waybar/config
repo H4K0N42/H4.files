@@ -1,0 +1,250 @@
+{
+	"reload_style_on_change": true,
+	"layer": "bottom",
+	"position": "bottom",
+	"height": 48,
+	"output": [
+		"DP-2"
+	],
+	"modules-left": [
+		"group/group-power",
+		"systemd-failed-units",
+		"group/info"
+	],
+	"modules-center": [
+		"hyprland/workspaces#lleft",
+		"custom/down",
+		"hyprland/workspaces#left",
+		"wlr/taskbar",
+		"hyprland/workspaces#right",
+		"custom/up",
+		"hyprland/workspaces#rright"
+	],
+	"modules-right": [
+		"tray",
+		"bluetooth",
+		"network",
+		"clock"
+	],
+	"cpu": {
+		"interval": 5,
+		"format": "CPU\n{usage: 3d}"
+	},
+	"bluetooth": {
+		"format": "󰂯?",
+		"tooltip": true,
+		"tooltip-format": "{controller_alias}\t{controller_address}",
+		"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+		"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+		"format-off": "󰂲",
+		"format-disabled": "󰂲",
+		"format-on": "󰂯",
+		"format-connected": "󰂱",
+		"on-click": "ghostty --title=fexec -e 'sleep .1;bluetoothctl'"
+	},
+	"hyprland/workspaces#lleft": {
+		"format": "{icon}",
+		"format-icons": {
+			"1": "󰐝",
+			"active": "",
+			"default": ""
+		},
+		"ignore-workspaces": [
+			"11",
+			"12",
+			"13",
+			"21",
+			"22",
+			"23",
+			"31"
+		],
+		"persistent-workspaces": {
+			"DP-2": [
+				1
+			]
+		}
+	},
+	"hyprland/workspaces#left": {
+		"format": "{icon}",
+		"format-icons": {
+			"11": "󰲠",
+			"12": "󰲢",
+			"13": "󰲤",
+			"active": "",
+			"default": ""
+		},
+		"ignore-workspaces": [
+			"21",
+			"22",
+			"23",
+			"31",
+			"1"
+		],
+		"persistent-workspaces": {
+			"DP-2": [
+				11,
+				12,
+				13
+			]
+		}
+	},
+	"custom/separator": {
+		"format": "  |  ",
+		"interval": 0
+	},
+	"hyprland/workspaces#right": {
+		"format": "{icon}",
+		"format-icons": {
+			"21": "󰲠",
+			"22": "󰲢",
+			"23": "󰲤",
+			"active": "",
+			"default": ""
+		},
+		"ignore-workspaces": [
+			"11",
+			"12",
+			"13",
+			"1",
+			"31"
+		],
+		"persistent-workspaces": {
+			"DP-2": [
+				21,
+				22,
+				23
+			]
+		}
+	},
+	"hyprland/workspaces#rright": {
+		"format": "{icon}",
+		"format-icons": {
+			"31": "󰓇",
+			"active": "",
+			"default": ""
+		},
+		"ignore-workspaces": [
+			"1",
+			"11",
+			"12",
+			"13",
+			"21",
+			"22",
+			"23"
+		],
+		"persistent-workspaces": {
+			"DP-2": [
+				31
+			]
+		}
+	},
+	"tray": {
+		"icon_size": 16,
+		"spacing": 8,
+		"show-passive-items": true,
+		"reverse-direction": true
+	},
+	"network": {
+		"interface": "enp5s0",
+		"format-wifi": "󰖩",
+		"format-ethernet": "󰈀",
+		"format-disconnected": "󰌙",
+		"tooltip-format-wifi": "Wifi",
+		"tooltip-format-ethernet": "Ethernet",
+		"tooltip-format-disconnected": "Disconnected",
+		"on-click": "ghostty --title=fexec -e 'sleep .1;nmtui'"
+	},
+	"clock": {
+		"format": " {:%T\n%d/%m/%Y}",
+		"interval": 1,
+		"on-click": "chromium --app=https://calendar.google.com/calendar/u/0/r/month"
+	},
+	"group/group-power": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"children-class": "not-power",
+			"transition-left-to-right": true
+		},
+		"modules": [
+			"custom/power",
+			"custom/reboot",
+			"custom/quit",
+			"custom/lock"
+		]
+	},
+	"custom/lock": {
+		"format": "󰍁",
+		"tooltip": false,
+		"on-click": "hyprlock"
+	},
+	"custom/quit": {
+		"format": "󰗼",
+		"tooltip": false,
+		"on-click": "bash ~/scripts/logout.sh"
+	},
+	"custom/reboot": {
+		"format": "󰜉",
+		"tooltip": false,
+		"on-click": "reboot"
+	},
+	"custom/power": {
+		"format": "",
+		"tooltip": false,
+		"on-click": "hyprlock -c ~/.config/hypr/hyprlock_off.conf & sleep 1 && shutdown now"
+	},
+	"systemd-failed-units": {
+		"hide-on-ok": true,
+		"format": "✗ {nr_failed}",
+		"format-ok": "✓",
+		"system": true,
+		"user": false
+	},
+	"wlr/taskbar": {
+		"all-outputs": true,
+		"format": "{icon}",
+		"icon-size": 20,
+		"tooltip": false,
+		"tooltip-format": "{title}",
+		"on-click": "activate",
+		"on-click-middle": "close",
+		"ignore-list": [
+			"spotify",
+			"Vicinae Launcher"
+		],
+		"rewrite": {
+			"Firefox Web Browser": "Firefox",
+			"Foot Server": "Terminal"
+		}
+	},
+	"custom/up": {
+		"format": ""
+	},
+	"custom/down": {
+		"format": ""
+	},
+	"custom/spotify": {
+		"format": "{text}\n{alt}",
+		"exec": "python /home/hagen/scripts/waybar_spotify/spotify.py",
+		"return-type": "json",
+		"interval": 5,
+		"alignment": "center"
+	},
+	"memory": {
+		"interval": 5,
+		"format": "MEM\n{: 3d}"
+	},
+	"custom/gpu": {
+		"exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{printf \"%3d\", $1}'",
+		"interval": 5,
+		"format": "GPU\n{}"
+	},
+	"group/info": {
+		"orientation": "inherit",
+		"modules": [
+			"cpu",
+			"custom/gpu",
+			"memory"
+		]
+	}
+}

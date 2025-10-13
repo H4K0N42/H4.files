@@ -1,0 +1,27 @@
+window#waybar {
+	background-color: #000000;
+	color: #ffffff;
+	font-family: "JetBrainsMono NFM", monospace;
+	font-weight: 400;
+	font-size: 14px;
+	background: rgba(0, 0, 0, 0);
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	margin: 0px;
+}
+
+.modules-left,
+.modules-right,
+#workspaces {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 16px;
+}
+
+#workspaces {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#workspaces label {
+	font-size: 25px;
+}
