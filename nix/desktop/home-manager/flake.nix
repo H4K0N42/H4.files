@@ -5,7 +5,7 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-bleeding-edge.url = "github:nixos/nixpkgs/master";
+    # nixpkgs-bleeding-edge.url = "github:nixos/nixpkgs/master";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +17,6 @@
       nixpkgs,
       home-manager,
       nixpkgs-unstable,
-      nixpkgs-bleeding-edge,
       ...
     }:
     let
@@ -30,17 +29,13 @@
         inherit system;
         config.allowUnfree = true;
       };
-      bleeding-edge = import nixpkgs-bleeding-edge {
-        inherit system;
-        config.allowUnfree = true;
-      };
     in
     {
       homeConfigurations."hagen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
         extraSpecialArgs = {
-          inherit unstable bleeding-edge;
+          inherit unstable;
         };
       };
     };

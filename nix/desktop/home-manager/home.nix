@@ -2,7 +2,6 @@
   config,
   pkgs,
   unstable,
-  bleeding-edge,
   ...
 }:
 let
@@ -126,7 +125,7 @@ in
     ++ [
       unstable.badlion-client
       unstable.davinci-resolve
-      (bleeding-edge.discord.override { withVencord = true; })
+      (unstable.discord.override { withVencord = true; })
     ];
 
   xdg.desktopEntries.badlion-launcher = {
