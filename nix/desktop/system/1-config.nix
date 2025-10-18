@@ -38,9 +38,9 @@
     allowUnfree = true;
   };
 
-  nixpkgs.overlays = [
-    inputs.millennium.overlays.default
-  ];
+  # nixpkgs.overlays = [
+  #   inputs.millennium.overlays.default
+  # ];
 
   nix = {
     settings = {

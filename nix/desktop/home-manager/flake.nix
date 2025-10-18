@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -17,6 +21,7 @@
       nixpkgs,
       home-manager,
       nixpkgs-unstable,
+      nur,
       ...
     }:
     let
@@ -29,13 +34,14 @@
         inherit system;
         config.allowUnfree = true;
       };
+      NUR = nur.legacyPackages.${system};
     in
     {
       homeConfigurations."hagen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
         extraSpecialArgs = {
-          inherit unstable;
+          inherit unstable NUR;
         };
       };
     };

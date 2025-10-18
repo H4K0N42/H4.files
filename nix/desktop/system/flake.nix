@@ -4,8 +4,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs-bleeding-edge.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    millennium.url = "git+https://github.com/SteamClientHomebrew/Millennium";
-    # millennium.url = "git+https://github.com/H4K0N42/Millennium";
+    # millennium.url = "git+https://github.com/SteamClientHomebrew/Millennium";
   };
 
   outputs =

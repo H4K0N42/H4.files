@@ -20,14 +20,17 @@
     splashImage = null;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages; # LTS
-  # boot.kernelPackages = unstable.linuxPackages;
-  # boot.kernelPackages = unstable.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages; # LTS
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+  # boot.kernelPackages = unstable.linuxPackages_zen;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback
   ];
-  boot.kernelModules = [ "v4l2loopback" ];
+  boot.kernelModules = [
+    "v4l2loopback"
+  ];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
   '';
@@ -39,5 +42,4 @@
     enable = true;
     wantedBy = [ "sockets.target" ];
   };
-
 }

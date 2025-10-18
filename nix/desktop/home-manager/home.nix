@@ -2,6 +2,7 @@
   config,
   pkgs,
   unstable,
+  NUR,
   ...
 }:
 let
@@ -118,13 +119,13 @@ in
       hyprpaper
       hyprsunset
       hyprpicker
-      spotify
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
     ++ [
       unstable.badlion-client
       unstable.davinci-resolve
+      unstable.spotify
       (unstable.discord.override { withVencord = true; })
     ];
 
