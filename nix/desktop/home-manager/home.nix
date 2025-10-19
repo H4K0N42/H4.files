@@ -125,7 +125,7 @@ in
     ++ [
       unstable.badlion-client
       unstable.davinci-resolve
-
+      unstable.spotify
       (unstable.discord.override { withVencord = true; })
     ];
 
