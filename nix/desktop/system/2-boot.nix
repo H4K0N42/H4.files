@@ -1,5 +1,6 @@
 {
   pkgs,
+  unstable,
   config,
   lib,
   ...
@@ -19,8 +20,9 @@
     splashImage = null;
   };
 
-  # boot.kernelPackages = pkgs.linuxPackages; # LTS
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages; # LTS
+  # boot.kernelPackages = unstable.linuxPackages; # LTS
+  # boot.kernelPackages = pkgs.linuxPackages_zen;
   # boot.kernelPackages = unstable.linuxPackages_zen;
   # boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -34,6 +36,8 @@
     options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
   '';
   boot.blacklistedKernelModules = [ "nouveau" ];
+
+  hardware.enableAllFirmware = true;
 
   systemd.network.wait-online.enable = false;
   systemd.services.docker.wantedBy = lib.mkForce [ ];

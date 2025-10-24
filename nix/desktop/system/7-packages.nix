@@ -43,6 +43,8 @@
       bitwarden-cli
       caligula
       xdg-desktop-portal-hyprland
+      v4l-utils
+      usbutils
     ])
     ++ [
     ];

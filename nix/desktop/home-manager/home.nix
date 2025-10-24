@@ -29,11 +29,11 @@ in
   programs.ghostty.enable = true;
   programs.wofi.enable = false;
   programs.waybar.enable = true;
-  programs.lutris.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   home.packages =
     (with pkgs; [
+      mcaselector
       prismlauncher
       blockbench
       texliveFull
@@ -80,8 +80,8 @@ in
       imagemagick
       spicetify-cli
       clipse
-      nemo
-      nemo-fileroller
+      # nemo
+      # nemo-fileroller
       file-roller
       jq
       vlc
@@ -119,11 +119,13 @@ in
       hyprpaper
       hyprsunset
       hyprpicker
+      dunst
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
     ++ [
       unstable.badlion-client
+      unstable.lunar-client
       unstable.davinci-resolve
       unstable.spotify
       (unstable.discord.override { withVencord = true; })
