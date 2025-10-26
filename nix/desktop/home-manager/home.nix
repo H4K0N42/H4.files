@@ -2,7 +2,7 @@
   config,
   pkgs,
   unstable,
-  # NUR,
+  NUR,
   ...
 }:
 let
@@ -31,6 +31,8 @@ in
   programs.waybar.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowBroken = true;
+
   home.packages =
     (with pkgs; [
       mcaselector
@@ -120,6 +122,7 @@ in
       hyprsunset
       hyprpicker
       dunst
+      reaper
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
@@ -129,6 +132,11 @@ in
       unstable.davinci-resolve
       unstable.spotify
       (unstable.discord.override { withVencord = true; })
+      (NUR.repos.juxgd.noriskclient-launcher.overrideAttrs (old: {
+        meta = old.meta // {
+          broken = false;
+        };
+      }))
     ];
 
   xdg.desktopEntries.badlion-launcher = {
@@ -145,18 +153,17 @@ in
     icon = "application-x-executable"; # Or a proper icon if you have one
   };
 
-  # xdg.desktopEntries.modrinth-app = {
-  #   name = "Modrinth Launcher";
-  #   comment = "Modrinth Minecraft Mod Browser";
-  #   exec = "env WEBKIT_DISABLE_COMPOSITING_MODE=1 ModrinthApp";
-  #   terminal = false;
-  #   type = "Application";
-  #   categories = [
-  #     "Game"
-  #     "Utility"
-  #   ];
-  #   icon = "application-x-executable"; # Or a proper icon if you have one
-  # };
+  xdg.desktopEntries.norisk = {
+    name = "NoRisk Client";
+    exec = "bash /home/hagen/scripts/norisk.sh";
+    terminal = false;
+    type = "Application";
+    categories = [
+      "Game"
+      "Utility"
+    ];
+    icon = "application-x-executable"; # Or a proper icon if you have one
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
