@@ -4,7 +4,7 @@
 
   networking.networkmanager.enable = true;
   networking.nameservers = [
-    "192.168.178.100"
+    "192.168.178.150"
     "192.168.178.1"
   ];
   networking.interfaces.enp5s0.wakeOnLan.enable = true;

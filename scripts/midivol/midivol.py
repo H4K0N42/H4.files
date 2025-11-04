@@ -170,7 +170,7 @@ def midi_callback(event, data=None):
         elif cc == MIDI_CC_BROWSER:
             set_volume_for_stream("Zen", val)
         elif cc == MIDI_CC_SPOTIFY:
-            set_volume_for_stream("spotify", val)
+            set_volume_for_stream("Chromium", val)
         elif cc == MIDI_CC_FOCUSED:
             set_volume_for_focused_app(val)
         elif cc == MIDI_CC_PHONE:
