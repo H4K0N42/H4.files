@@ -27,15 +27,14 @@ in
     enableBashIntegration = true;
   };
   programs.ghostty.enable = true;
-  programs.wofi.enable = false;
   programs.waybar.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowBroken = true;
+  nixpkgs.config.allowBroken = false;
 
   home.packages =
     (with pkgs; [
-      mcaselector
+      # mcaselector
       prismlauncher
       blockbench
       texliveFull
