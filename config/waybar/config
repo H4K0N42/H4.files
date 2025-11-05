@@ -210,6 +210,7 @@
 		"on-click-middle": "close",
 		"ignore-list": [
 			"spotify",
+			"TIDAL Hi-Fi",
 			"Vicinae Launcher"
 		],
 		"rewrite": {
