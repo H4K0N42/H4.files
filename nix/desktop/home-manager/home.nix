@@ -130,6 +130,7 @@ in
       unstable.lunar-client
       unstable.davinci-resolve
       unstable.spotify
+      unstable.winboat
       (unstable.discord.override { withVencord = true; })
       # (NUR.repos.juxgd.noriskclient-launcher.overrideAttrs (old: {
       #   meta = old.meta // {
