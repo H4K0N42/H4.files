@@ -119,7 +119,7 @@
 	"hyprland/workspaces#rright": {
 		"format": "{icon}",
 		"format-icons": {
-			"31": "󰓇",
+			"31": "󰫔",
 			"active": "",
 			"default": ""
 		},

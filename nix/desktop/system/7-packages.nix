@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 {
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages =
@@ -127,7 +127,7 @@
     hyprland = {
       enable = true;
       xwayland.enable = true;
-      # package = unstable.hyprland;
+      package = unstable.hyprland;
     };
 
     steam = {
@@ -182,6 +182,7 @@
       ];
     };
 
+    yazi.enable = true;
     weylus = {
       enable = false;
       users = [ "hagen" ];
