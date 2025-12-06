@@ -1,15 +1,17 @@
 {
-  networking.hostName = "notoast";
-  # networking.wireless.enable = true;
+  networking = {
+    hostName = "notoast";
+    # wireless.enable = true;
 
-  networking.networkmanager.enable = true;
-  networking.nameservers = [
-    "192.168.178.150"
-    "192.168.178.1"
-  ];
-  networking.interfaces.enp5s0.wakeOnLan.enable = true;
+    networkmanager.enable = true;
+    nameservers = [
+      "192.168.178.150"
+      "192.168.178.1"
+    ];
+    interfaces.enp5s0.wakeOnLan.enable = true;
 
-  networking.firewall.enable = false;
+    firewall.enable = false;
+  };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;

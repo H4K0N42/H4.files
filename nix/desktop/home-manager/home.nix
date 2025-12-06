@@ -122,6 +122,7 @@ in
       hyprpicker
       dunst
       reaper
+      sqlitebrowser
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
