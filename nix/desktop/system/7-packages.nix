@@ -45,6 +45,7 @@
       xdg-desktop-portal-hyprland
       v4l-utils
       usbutils
+      nix-tree
     ])
     ++ [
     ];
@@ -58,6 +59,16 @@
     };
 
     displayManager.ly.enable = true;
+
+    # displayManager.sddm = {
+    #   enable = true;
+    #   wayland.enable = true;
+    #   autoLogin.relogin = false;
+    # };
+    # displayManager.autoLogin = {
+    #   enable = true;
+    #   user = "hagen";
+    # };
 
     # displayManager.enable = true;
     # greetd = {
@@ -128,6 +139,11 @@
       enable = true;
       xwayland.enable = true;
       package = unstable.hyprland;
+    };
+
+    hyprlock = {
+      enable = true;
+      package = unstable.hyprlock;
     };
 
     steam = {
@@ -208,7 +224,6 @@
     yubikey-touch-detector.enable = true;
 
     java.enable = true;
-    hyprlock.enable = true;
     noisetorch.enable = true;
     streamcontroller.enable = true;
     gpu-screen-recorder.enable = true;

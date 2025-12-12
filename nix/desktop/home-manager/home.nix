@@ -81,8 +81,6 @@ in
       imagemagick
       spicetify-cli
       clipse
-      # nemo
-      # nemo-fileroller
       file-roller
       jq
       vlc
@@ -123,6 +121,7 @@ in
       dunst
       reaper
       sqlitebrowser
+      losslesscut-bin
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
