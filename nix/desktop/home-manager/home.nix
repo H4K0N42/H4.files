@@ -42,7 +42,7 @@ in
       cryptomator
       arduino-ide
       github-desktop
-      heroic
+      # heroic
       zed-editor
       zenity
       cool-retro-term
@@ -122,6 +122,8 @@ in
       reaper
       sqlitebrowser
       losslesscut-bin
+      gitleaks
+      pre-commit
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
