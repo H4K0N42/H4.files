@@ -28,6 +28,9 @@ in
   };
   programs.ghostty.enable = true;
   programs.waybar.enable = true;
+  programs.vicinae = {
+    enable = true;
+  };
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = false;

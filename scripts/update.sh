@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ "$TERM" != "xterm-ghostty" ]]; then
-    exec ghostty --title=fexec -e "bash ~/scripts/update.sh"
+    exec ghostty --title=fexec -e "bash" ~/scripts/update.sh
 fi
 
 sudo nix flake update --flake /etc/nixos/
