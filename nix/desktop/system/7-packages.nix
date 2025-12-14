@@ -33,7 +33,7 @@
       pinentry-qt
       fastfetch
       htop
-      python3Full
+      python3
       adafruit-ampy
       adwaita-icon-theme
       hicolor-icon-theme
@@ -125,10 +125,6 @@
       ];
       startWhenNeeded = true;
     };
-    preload = {
-      enable = true;
-      package = pkgs.preload;
-    };
     fwupd.enable = true;
   };
 
@@ -138,12 +134,10 @@
     hyprland = {
       enable = true;
       xwayland.enable = true;
-      package = unstable.hyprland;
     };
 
     hyprlock = {
       enable = true;
-      package = unstable.hyprlock;
     };
 
     steam = {
@@ -231,7 +225,7 @@
     virt-manager.enable = true;
     gnupg.agent.enable = true;
     gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
-    thefuck.enable = true;
+    pay-respects.enable = true;
   };
 
   # Virtualisation
@@ -247,7 +241,6 @@
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-        ovmf.enable = true;
       };
     };
   };
