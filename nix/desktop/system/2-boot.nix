@@ -20,11 +20,8 @@
     splashImage = null;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages; # LTS
-  # boot.kernelPackages = unstable.linuxPackages; # LTS
+  boot.kernelPackages = pkgs.linuxPackages;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
-  # boot.kernelPackages = unstable.linuxPackages_zen;
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback

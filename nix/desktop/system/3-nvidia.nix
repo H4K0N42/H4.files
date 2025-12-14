@@ -43,8 +43,7 @@
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    # package = config.boot.kernelPackages.nvidiaPackages.latest;
-    # package = pkgs.linuxPackages.nvidiaPackages.latest;
-    package = unstable.linuxPackages.nvidiaPackages.production;
+    # package = unstable.linuxPackages.nvidiaPackages.production;
+    package = unstable.linuxPackages.nvidiaPackages.beta;
   };
 }
