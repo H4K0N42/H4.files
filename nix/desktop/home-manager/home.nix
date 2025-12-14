@@ -42,7 +42,6 @@ in
       cryptomator
       arduino-ide
       github-desktop
-      # heroic
       zed-editor
       zenity
       cool-retro-term
@@ -128,6 +127,7 @@ in
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
     ++ [
+      unstable.heroic
       unstable.badlion-client
       unstable.lunar-client
       unstable.davinci-resolve
