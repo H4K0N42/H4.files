@@ -21,6 +21,7 @@
       "kvm"
       "lp"
       "dialout"
+      "maccel"
     ];
   };
 

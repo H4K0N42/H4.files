@@ -17,6 +17,20 @@
     ];
   };
 
+  hardware.maccel = {
+    enable = true;
+    enableCli = true; # Optional: for parameter discovery
+    parameters = {
+      sensMultiplier = 0.6;
+      inputDpi = 1600.0;
+      mode = "no_accel";
+
+      decayRate = 0.3;
+      offset = 0.5;
+      limit = 1.8;
+    };
+  };
+
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1e7d", ATTRS{idProduct}=="2fee", TAG+="uaccess", TAG+="ROCCAT_Vulcan_TKL"
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1e7d", ATTRS{idProduct}=="2e2c", TAG+="uaccess", TAG+="ROCCAT_Kone_Aimo_16K"

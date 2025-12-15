@@ -5,6 +5,7 @@
     # nixpkgs-bleeding-edge.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     # millennium.url = "git+https://github.com/SteamClientHomebrew/Millennium";
+    maccel.url = "github:Gnarus-G/maccel";
   };
 
   outputs =

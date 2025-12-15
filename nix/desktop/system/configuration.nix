@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
+{ inputs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -14,6 +14,7 @@
     ./6-locale.nix
     ./7-packages.nix
     ./8-ai.nix
+    inputs.maccel.nixosModules.default
   ];
 
   # This value determines the NixOS release from which the default
