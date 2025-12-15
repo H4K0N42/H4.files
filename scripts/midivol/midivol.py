@@ -41,7 +41,7 @@ def get_stream_id_by_name(name_substring):
             if in_audio_streams:
                 # Check if name_substring appears anywhere in line, case-insensitive
                 if name_substring.lower() in line.lower():
-                    match = re.match(r'^\s*(\d+)\.', line)
+                    match = re.match(r'^\s{0,9}(\d+)\.', line)
                     if match:
                         return match.group(1)
                 # End of streams section if dedented

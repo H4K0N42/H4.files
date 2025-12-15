@@ -1,8 +1,4 @@
-{
-  config,
-  unstable,
-  ...
-}:
+{ unstable, ... }:
 {
   # Enable OpenGL
   hardware.graphics = {

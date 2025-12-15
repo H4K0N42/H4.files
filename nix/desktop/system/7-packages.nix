@@ -216,7 +216,7 @@
     };
 
     yubikey-touch-detector.enable = true;
-
+    nix-index.enable = true;
     java.enable = true;
     noisetorch.enable = true;
     streamcontroller.enable = true;

@@ -20,7 +20,8 @@
     splashImage = null;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages;
+  # boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = unstable.linuxPackages;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
