@@ -126,6 +126,9 @@ in
       losslesscut-bin
       gitleaks
       pre-commit
+      chatterino7
+      pkgs.kdePackages.kate
+      meld
       ###############
       (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
     ])
@@ -136,13 +139,9 @@ in
       unstable.davinci-resolve
       unstable.spotify
       unstable.yt-dlp
+      unstable.noriskclient-launcher
       # unstable.winboat
       (unstable.discord.override { withVencord = true; })
-      # (NUR.repos.juxgd.noriskclient-launcher.overrideAttrs (old: {
-      #   meta = old.meta // {
-      #     broken = false;
-      #   };
-      # }))
     ];
 
   xdg.desktopEntries.badlion-launcher = {

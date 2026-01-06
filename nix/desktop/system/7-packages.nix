@@ -6,7 +6,9 @@
       speedtest-cli
       rustdesk-flutter
       busybox
+      gtk3
       glib
+      gsettings-desktop-schemas
       hyprpolkitagent
       pciutils
       util-linux

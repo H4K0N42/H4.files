@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Replace this with your actual mic source name
-MIC_SOURCE="NoiseTorch\ Microphone\ for\ Q9-1"
+MIC_SOURCE="easyeffects_source"
 
 # Load the null sink (virtual sink for soundboard)
 pactl load-module module-null-sink sink_name=SoundboardSink sink_properties=device.description=SoundboardSink
