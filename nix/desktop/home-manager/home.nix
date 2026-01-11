@@ -45,7 +45,6 @@ in
       cryptomator
       arduino-ide
       github-desktop
-      zed-editor
       zenity
       cool-retro-term
       kdePackages.filelight
@@ -130,7 +129,7 @@ in
       pkgs.kdePackages.kate
       meld
       ###############
-      (pkgs.writeShellScriptBin "beeper" ''exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11'')
+      (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
       unstable.heroic
