@@ -9,7 +9,6 @@
       gtk3
       glib
       gsettings-desktop-schemas
-      hyprpolkitagent
       pciutils
       util-linux
       vscode
@@ -18,6 +17,12 @@
       bluez-tools
       wireplumber
       hyprland-qtutils
+      hyprls
+      hyprpaper
+      hyprsunset
+      hyprpicker
+      hyprland-qt-support
+      hyprpolkitagent
       appimage-run
       mesa
       vulkan-loader

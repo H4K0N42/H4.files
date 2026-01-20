@@ -186,12 +186,12 @@
 	"custom/reboot": {
 		"format": "󰜉",
 		"tooltip": false,
-		"on-click": "reboot"
+		"on-click": "hyprshutdown -p 'reboot'"
 	},
 	"custom/power": {
 		"format": "",
 		"tooltip": false,
-		"on-click": "hyprlock -c ~/.config/hypr/hyprlock_off.conf & sleep 1 && shutdown now"
+		"on-click": "hyprshutdown -p 'shutdown now'"
 	},
 	"systemd-failed-units": {
 		"hide-on-ok": true,

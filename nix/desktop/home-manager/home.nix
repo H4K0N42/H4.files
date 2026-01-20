@@ -73,6 +73,7 @@ in
       gcc
       fzf
       gitFull
+      git-lfs
       wget
       unzip
       curl
@@ -115,10 +116,6 @@ in
       netcat-openbsd
       onlyoffice-desktopeditors
       gearlever
-      hyprls
-      hyprpaper
-      hyprsunset
-      hyprpicker
       dunst
       reaper
       sqlitebrowser

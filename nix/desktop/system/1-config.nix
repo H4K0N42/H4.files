@@ -4,25 +4,31 @@
   ...
 }:
 {
-  users.users.hagen = {
-    isNormalUser = true;
-    description = "Hagen";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "davfs2"
-      "input"
-      "docker"
-      "video"
-      "gamemode"
-      "libvirtd"
-      "libvirt"
-      "qemu-libvirtd"
-      "kvm"
-      "lp"
-      "dialout"
-      "maccel"
-    ];
+  users = {
+    users.hagen = {
+      isNormalUser = true;
+      description = "Hagen";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "davfs2"
+        "input"
+        "docker"
+        "video"
+        "gamemode"
+        "libvirtd"
+        "libvirt"
+        "qemu-libvirtd"
+        "kvm"
+        "lp"
+        "dialout"
+        "maccel"
+        "nextcloud"
+      ];
+    };
+    groups.nextcloud = {
+      gid = 33;
+    };
   };
 
   security.polkit.enable = true;

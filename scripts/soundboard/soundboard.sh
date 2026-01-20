@@ -9,5 +9,7 @@ fi
 
 FILE=~/Documents/Soundboard/Hagen/"$1"
 
+trap '' HUP
+
 paplay --device=SoundboardSink "$FILE" &
-paplay --device=@DEFAULT_SINK@ "$FILE"
+paplay --device=@DEFAULT_SINK@ "$FILE" &

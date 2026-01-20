@@ -80,6 +80,7 @@
       "dmask=007"
       "fmask=007"
       "nofail"
+      "force"
     ];
   };
 
@@ -98,4 +99,19 @@
       "nofail"
     ];
   };
+
+  fileSystems."/mnt/nfs" = {
+    device = "192.168.178.150:/";
+    fsType = "nfs";
+    options = [
+      "rw" # read/write
+      "x-systemd.automount"
+      "noatime"
+      "vers=4"
+      "nofail"
+      "_netdev"
+      "hard"
+    ];
+  };
+
 }
