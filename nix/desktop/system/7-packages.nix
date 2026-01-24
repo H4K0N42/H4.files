@@ -133,6 +133,12 @@
       startWhenNeeded = true;
     };
     fwupd.enable = true;
+
+    hardware.openrgb = {
+      enable = true;
+      package = unstable.openrgb;
+      motherboard = "intel";
+    };
   };
 
   # Programs

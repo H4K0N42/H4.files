@@ -98,17 +98,6 @@
     updater.enable = false;
     fangfrisch.enable = false;
   };
-  systemd.services.openrgb = {
-    description = "OpenRGB Server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.appimage-run}/bin/appimage-run /home/hagen/Documents/OpenRGB/OpenRGB-x86_64.AppImage --server";
-      User = "root";
-      Restart = "on-failure";
-    };
-  };
 
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin/bw - - - - ${lib.getExe' pkgs.bitwarden-cli "bw"}"

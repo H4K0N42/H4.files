@@ -32,8 +32,6 @@
   };
 
   services.udev.extraRules = ''
-    SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1e7d", ATTRS{idProduct}=="2fee", TAG+="uaccess", TAG+="ROCCAT_Vulcan_TKL"
-    SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1e7d", ATTRS{idProduct}=="2e2c", TAG+="uaccess", TAG+="ROCCAT_Kone_Aimo_16K"
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0135", TAG+="uaccess", TAG+="CMEDIA_Q9_1"
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="0c04", TAG+="uaccess", TAG+="RAZER_Firefly_V2"
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="0528", TAG+="uaccess", TAG+="RAZER_BlackShark_V2_Pro"
