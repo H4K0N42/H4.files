@@ -15,5 +15,7 @@ home-manager switch
 echo
 nix profile upgrade --all
 echo
+flatpak update -y
+echo
 echo Done.
 read

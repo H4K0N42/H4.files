@@ -23,6 +23,7 @@
       hyprpicker
       hyprland-qt-support
       hyprpolkitagent
+      hyprshot
       appimage-run
       mesa
       vulkan-loader
@@ -53,6 +54,7 @@
       v4l-utils
       usbutils
       nix-tree
+      quickshell
     ])
     ++ [
     ];
@@ -136,7 +138,7 @@
 
     hardware.openrgb = {
       enable = true;
-      package = unstable.openrgb;
+      package = unstable.openrgb-with-all-plugins;
       motherboard = "intel";
     };
   };

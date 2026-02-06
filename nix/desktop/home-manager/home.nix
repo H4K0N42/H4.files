@@ -2,7 +2,6 @@
   config,
   pkgs,
   unstable,
-  NUR,
   ...
 }:
 let
@@ -125,6 +124,13 @@ in
       chatterino7
       pkgs.kdePackages.kate
       meld
+      remmina
+      nwg-look
+      mullvad-vpn
+      mullvad-browser
+      krita
+      krita-plugin-gmic
+      noriskclient-launcher
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
@@ -135,7 +141,7 @@ in
       unstable.davinci-resolve
       unstable.spotify
       unstable.yt-dlp
-      unstable.noriskclient-launcher
+      unstable.aseprite
       # unstable.winboat
       (unstable.discord.override { withVencord = true; })
     ];
@@ -200,6 +206,7 @@ in
     NIXPKGS_ALLOW_UNFREE = "1";
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
+    __NV_DISABLE_EXPLICIT_SYNC = "1";
   };
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

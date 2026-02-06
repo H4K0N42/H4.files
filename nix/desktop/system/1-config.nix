@@ -75,24 +75,6 @@
     };
   };
 
-  systemd.timers."flatpak-update" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "daily";
-      Persistent = true;
-    };
-  };
-
-  systemd.services."flatpak-update" = {
-    script = ''
-      ${pkgs.flatpak}/bin/flatpak update -y
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
-
   services.clamav = {
     daemon.enable = false;
     updater.enable = false;
