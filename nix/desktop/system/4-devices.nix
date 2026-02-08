@@ -25,9 +25,9 @@
       inputDpi = 1600.0;
       mode = "no_accel";
 
-      decayRate = 0.3;
-      offset = 0.5;
-      limit = 1.8;
+      # decayRate = 0.3;
+      # offset = 0.5;
+      # limit = 1.8;
     };
   };
 

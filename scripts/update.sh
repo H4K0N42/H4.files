@@ -10,12 +10,18 @@ if ! sudo nixos-rebuild switch; then
     sudo nixos-rebuild switch
 fi
 echo
+home-manager expire-generations "-7 days"
 nix flake update --flake ~/.config/home-manager/
 home-manager switch
 echo
+nix profile wipe-history --older-than 7d
 nix profile upgrade --all
 echo
 flatpak update -y
+echo
+nvd diff /run/booted-system /run/current-system -s
+echo
+ls -d1v ~/.local/state/nix/profiles/home-manager-*-link | tail -n 2 | xargs nvd diff -s
 echo
 echo Done.
 read

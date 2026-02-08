@@ -55,6 +55,7 @@
       usbutils
       nix-tree
       quickshell
+      nvd
     ])
     ++ [
     ];
