@@ -131,15 +131,18 @@ in
       krita
       krita-plugin-gmic
       noriskclient-launcher
+      neovim
+      lazygit
+      dig
+      teamspeak6-client
+      motrix
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
       unstable.heroic
       unstable.badlion-client
-      unstable.lunar-client
       unstable.davinci-resolve
-      unstable.spotify
       unstable.yt-dlp
       unstable.aseprite
       # unstable.winboat
