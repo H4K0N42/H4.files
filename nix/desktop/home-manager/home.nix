@@ -106,6 +106,7 @@ in
       linux-wallpaperengine
       helvum
       kdePackages.kleopatra
+      kdePackages.kdenlive
       nomacs
       protonup-qt
       dialog
@@ -128,8 +129,6 @@ in
       nwg-look
       mullvad-vpn
       mullvad-browser
-      krita
-      krita-plugin-gmic
       noriskclient-launcher
       neovim
       lazygit
