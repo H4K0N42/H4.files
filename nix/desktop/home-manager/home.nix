@@ -135,11 +135,12 @@ in
       dig
       teamspeak6-client
       motrix
+      osu-lazer-bin
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
-      unstable.heroic
+      # unstable.heroic
       unstable.badlion-client
       unstable.davinci-resolve
       unstable.yt-dlp
