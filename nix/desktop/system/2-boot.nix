@@ -7,33 +7,39 @@
 }:
 
 {
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.timeout = 1;
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    device = "nodev"; # Use "nodev" when using EFI
-    useOSProber = true;
+  boot = {
+    loader.systemd-boot.enable = false;
+    loader.timeout = 1;
+    loader.grub = {
+      enable = true;
+      efiSupport = true;
+      device = "nodev"; # Use "nodev" when using EFI
+      useOSProber = true;
 
-    gfxmodeEfi = "2560x1440";
-    backgroundColor = "#000000";
-    splashImage = null;
+      gfxmodeEfi = "2560x1440";
+      backgroundColor = "#000000";
+      splashImage = null;
+    };
+
+    # kernelPackages = pkgs.linuxPackages;
+    kernelPackages = unstable.linuxPackages;
+    # kernelPackages = pkgs.linuxPackages_zen;
+
+    extraModulePackages = with config.boot.kernelPackages; [
+      v4l2loopback
+    ];
+    kernelModules = [
+      "v4l2loopback"
+    ];
+    extraModprobeConfig = ''
+      options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    '';
+    blacklistedKernelModules = [ "nouveau" ];
+
+    kernel.sysctl = {
+      "vm.swappiness" = 10;
+    };
   };
-
-  # boot.kernelPackages = pkgs.linuxPackages;
-  boot.kernelPackages = unstable.linuxPackages;
-  # boot.kernelPackages = pkgs.linuxPackages_zen;
-
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
-  boot.kernelModules = [
-    "v4l2loopback"
-  ];
-  boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
-  '';
-  boot.blacklistedKernelModules = [ "nouveau" ];
 
   hardware.enableAllFirmware = true;
 
@@ -43,4 +49,22 @@
     enable = true;
     wantedBy = [ "sockets.target" ];
   };
+
+  swapDevices = [
+    {
+      device = "/dev/disk/by-uuid/dbbf506e-d359-4253-b4e9-8ea8ccb4a055";
+      priority = 3;
+    }
+    {
+      device = "/swapfile";
+      priority = 1;
+      options = [ "nofail" ];
+    }
+    {
+      device = "/mnt/ssd/swapfile";
+      priority = 2;
+      options = [ "nofail" ];
+    }
+  ];
+
 }

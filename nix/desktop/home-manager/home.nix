@@ -136,6 +136,9 @@ in
       teamspeak6-client
       motrix
       osu-lazer-bin
+      opencode
+      lmstudio
+      ardour
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])

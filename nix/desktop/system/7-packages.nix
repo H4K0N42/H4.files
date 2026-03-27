@@ -158,7 +158,7 @@
 
     steam = {
       enable = true;
-      package = pkgs.millennium-steam;
+      # package = pkgs.millennium-steam;
       protontricks.enable = true;
       extraPackages = with pkgs; [
         # gamescope
