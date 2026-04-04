@@ -54,7 +54,6 @@ in
       sushi
       code-nautilus
       celluloid
-      tidal-hifi
       htop
       playerctl
       geary
@@ -138,12 +137,15 @@ in
       osu-lazer-bin
       opencode
       lmstudio
-      ardour
+      renoise
+      zrythm
+      bottles
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
       # unstable.heroic
+      unstable.tidal-hifi
       unstable.badlion-client
       unstable.davinci-resolve
       unstable.yt-dlp

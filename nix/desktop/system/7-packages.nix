@@ -56,6 +56,7 @@
       nix-tree
       quickshell
       nvd
+      smartmontools
     ])
     ++ [
     ];
@@ -154,6 +155,7 @@
 
     hyprlock = {
       enable = true;
+      package = unstable.hyprlock;
     };
 
     steam = {
