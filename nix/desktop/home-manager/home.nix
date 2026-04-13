@@ -137,14 +137,13 @@ in
       osu-lazer-bin
       opencode
       lmstudio
-      renoise
       zrythm
       bottles
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
-      # unstable.heroic
+      unstable.heroic
       unstable.tidal-hifi
       unstable.badlion-client
       unstable.davinci-resolve

@@ -23,5 +23,9 @@ nvd diff /run/booted-system /run/current-system
 echo
 ls -d1v ~/.local/state/nix/profiles/home-manager-*-link | tail -n 2 | xargs nvd diff
 echo
+nvd diff -s /run/booted-system /run/current-system
+echo
+ls -d1v ~/.local/state/nix/profiles/home-manager-*-link | tail -n 2 | xargs nvd diff -s
+echo
 echo Done.
 read
