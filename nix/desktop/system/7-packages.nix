@@ -16,14 +16,6 @@
       bluez
       bluez-tools
       wireplumber
-      hyprland-qtutils
-      hyprls
-      hyprpaper
-      hyprsunset
-      hyprpicker
-      hyprland-qt-support
-      hyprpolkitagent
-      hyprshot
       appimage-run
       mesa
       vulkan-loader
@@ -50,15 +42,24 @@
       ntfs3g
       bitwarden-cli
       caligula
-      xdg-desktop-portal-hyprland
       v4l-utils
       usbutils
       nix-tree
       quickshell
       nvd
       smartmontools
+      hyprland-qtutils
+      hyprls
+      hyprpaper
+      hyprsunset
+      hyprpicker
+      hyprland-qt-support
+      hyprpolkitagent
+      hyprshot
+      xdg-desktop-portal-hyprland
     ])
     ++ [
+      unstable.zed-editor-fhs
     ];
   # Services
   services = {
@@ -151,11 +152,12 @@
     hyprland = {
       enable = true;
       xwayland.enable = true;
+      # package = unstable.hyprland;
     };
 
     hyprlock = {
       enable = true;
-      package = unstable.hyprlock;
+      # package = unstable.hyprlock;
     };
 
     steam = {

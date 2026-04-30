@@ -139,6 +139,10 @@ in
       lmstudio
       zrythm
       bottles
+      lmms
+      ardour
+      wireshark
+      handbrake
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
@@ -149,8 +153,10 @@ in
       unstable.davinci-resolve
       unstable.yt-dlp
       unstable.aseprite
+      (unstable.discord.override {
+        withVencord = true;
+      })
       # unstable.winboat
-      (unstable.discord.override { withVencord = true; })
     ];
 
   xdg.desktopEntries.badlion-launcher = {
