@@ -1,4 +1,4 @@
-{ unstable, ... }:
+{ config, unstable, ... }:
 {
   # Enable OpenGL
   hardware.graphics = {
@@ -39,7 +39,7 @@
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    # package = unstable.linuxPackages.nvidiaPackages.production;
-    package = unstable.linuxPackages.nvidiaPackages.beta;
+    # package = unstable.linuxPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 }
