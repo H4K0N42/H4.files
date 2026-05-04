@@ -135,7 +135,6 @@ in
       teamspeak6-client
       motrix
       osu-lazer-bin
-      opencode
       lmstudio
       zrythm
       bottles
@@ -147,6 +146,7 @@ in
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
+      unstable.opencode
       unstable.heroic
       unstable.tidal-hifi
       unstable.badlion-client
