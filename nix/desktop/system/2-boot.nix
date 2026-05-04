@@ -21,9 +21,9 @@
       splashImage = null;
     };
 
-    # kernelPackages = pkgs.linuxPackages;
     kernelPackages = unstable.linuxPackages;
-    # kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-latest-lto-x86_64-v4";
+    # kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-lts-lto-x86_64-v4";
 
     extraModulePackages = with config.boot.kernelPackages; [
       v4l2loopback
@@ -53,16 +53,11 @@
   swapDevices = [
     {
       device = "/dev/disk/by-uuid/dbbf506e-d359-4253-b4e9-8ea8ccb4a055";
-      priority = 3;
+      priority = 2;
     }
     {
       device = "/swapfile";
       priority = 1;
-      options = [ "nofail" ];
-    }
-    {
-      device = "/mnt/ssd/swapfile";
-      priority = 2;
       options = [ "nofail" ];
     }
   ];

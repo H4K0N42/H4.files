@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs-bleeding-edge.url = "github:nixos/nixpkgs/master";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     # millennium = {
     #   url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
@@ -17,6 +17,7 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
+      nix-cachyos-kernel,
       ...
     }@inputs:
     let
@@ -24,6 +25,7 @@
       unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ nix-cachyos-kernel.overlays.pinned ];
       };
     in
     {

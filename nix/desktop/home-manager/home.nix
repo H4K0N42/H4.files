@@ -159,19 +159,19 @@ in
       # unstable.winboat
     ];
 
-  xdg.desktopEntries.badlion-launcher = {
-    name = "Badlion Launcher";
-    genericName = "Badlion Client";
-    comment = "Launch Badlion via custom script";
-    exec = "bash ${config.home.homeDirectory}/scripts/launch-badlion.sh";
-    terminal = false;
-    type = "Application";
-    categories = [
-      "Game"
-      "Utility"
-    ];
-    icon = "application-x-executable"; # Or a proper icon if you have one
-  };
+  # xdg.desktopEntries.badlion-launcher = {
+  #   name = "Badlion Launcher";
+  #   genericName = "Badlion Client";
+  #   comment = "Launch Badlion via custom script";
+  #   exec = "bash ${config.home.homeDirectory}/scripts/launch-badlion.sh";
+  #   terminal = false;
+  #   type = "Application";
+  #   categories = [
+  #     "Game"
+  #     "Utility"
+  #   ];
+  #   icon = "application-x-executable"; # Or a proper icon if you have one
+  # };
 
   xdg.desktopEntries.norisk = {
     name = "NoRisk Client";
@@ -219,7 +219,6 @@ in
     NIXPKGS_ALLOW_UNFREE = "1";
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
-    __NV_DISABLE_EXPLICIT_SYNC = "1";
   };
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

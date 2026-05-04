@@ -2,7 +2,7 @@
 {
   services = {
     ollama = {
-      enable = true;
+      enable = false;
       # package = unstable.ollama-cuda;
       host = "0.0.0.0";
       acceleration = "cuda";
