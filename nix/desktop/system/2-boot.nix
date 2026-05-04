@@ -21,9 +21,8 @@
       splashImage = null;
     };
 
-    kernelPackages = unstable.linuxPackages;
-    # kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-latest-lto-x86_64-v4";
-    # kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-lts-lto-x86_64-v4";
+    kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-latest-lto-x86_64-v4";
+    # kernelPackages = unstable.linuxPackages;
 
     extraModulePackages = with config.boot.kernelPackages; [
       v4l2loopback

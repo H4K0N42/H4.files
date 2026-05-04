@@ -2,14 +2,18 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     # millennium = {
     #   url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     maccel.url = "github:Gnarus-G/maccel";
 
+    #    veyon.url = "path:/home/hagen/Documents/veyon-flake";
   };
 
   outputs =
@@ -25,7 +29,10 @@
       unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nix-cachyos-kernel.overlays.pinned ];
+        overlays = [
+          nix-cachyos-kernel.overlays.default
+          # nix-cachyos-kernel.overlays.pinned
+        ];
       };
     in
     {
@@ -34,7 +41,9 @@
         specialArgs = {
           inherit inputs unstable;
         };
-        modules = [ ./configuration.nix ];
+        modules = [
+          ./configuration.nix
+        ];
       };
     };
 }
