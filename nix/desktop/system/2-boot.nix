@@ -1,5 +1,6 @@
 {
   unstable,
+  pkgs,
   config,
   lib,
   ...
@@ -21,7 +22,7 @@
     };
 
     # kernelPackages = unstable.cachyosKernels."linuxPackages-cachyos-lts-lto-x86_64-v4";
-    kernelPackages = unstable.linuxPackages;
+    kernelPackages = pkgs.linuxPackages;
 
     extraModulePackages = with config.boot.kernelPackages; [
       v4l2loopback
