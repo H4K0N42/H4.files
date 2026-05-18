@@ -13,6 +13,7 @@ MIDI_CC_PHONE = 3
 MIDI_CC_FOCUSED = 4
 MIDI_CHANNEL = 0          # MIDI channel (0-indexed)
 
+cbtime = 0
 # Logging setup
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("midivol")
@@ -160,6 +161,11 @@ def exp_scale(value, max_value=100, gamma=2):
     return int(round(scaled * max_value))
 
 def midi_callback(event, data=None):
+    global cbtime
+    t = time.time()
+    if t - cbtime < 0.025:
+        return
+    cbtime = t
     message, _ = event
     if message[0] == 0xB0 + MIDI_CHANNEL:
         cc = message[1]
@@ -191,7 +197,7 @@ log.info("Listening for MIDI CC... Press Ctrl+C to exit.")
 
 try:
     while True:
-        time.sleep(0.1)  # avoid busy wait
+        time.sleep(1)  # avoid busy wait
 except KeyboardInterrupt:
     log.info("Exiting.")
 finally:
