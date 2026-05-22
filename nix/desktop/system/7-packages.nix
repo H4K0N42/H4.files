@@ -57,6 +57,7 @@
       hyprpolkitagent
       hyprshot
       xdg-desktop-portal-hyprland
+      gamescope
     ])
     ++ [
       unstable.zed-editor-fhs
@@ -164,9 +165,10 @@
       enable = true;
       # package = pkgs.millennium-steam;
       protontricks.enable = true;
+      gamescopeSession.enable = true;
       extraPackages = with pkgs; [
-        # gamescope
         gamemode
+        gamescope
       ];
     };
 
@@ -194,6 +196,7 @@
         # };
       };
     };
+
     # gamescope = {
     #   enable = true;
     #   capSysNice = true;

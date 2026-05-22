@@ -1,4 +1,9 @@
-{ config, unstable, ... }:
+{
+  config,
+  unstable,
+  lib,
+  ...
+}:
 {
   # Enable OpenGL
   hardware.graphics = {
@@ -39,7 +44,19 @@
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    # package = unstable.linuxPackages.nvidiaPackages.beta;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # package = unstable.linuxPackages.nvidiaPackages.stable;
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+      version = "595.58.03";
+      sha256_64bit = "sha256-jA1Plnt5MsSrVxQnKu6BAzkrCnAskq+lVRdtNiBYKfk=";
+      openSha256 = "sha256-6LvJyT0cMXGS290Dh8hd9rc+nYZqBzDIlItOFk8S4n8=";
+      settingsSha256 = "sha256-2vLF5Evl2D6tRQJo0uUyY3tpWqjvJQ0/Rpxan3NOD3c=";
+
+      # headless servers only feature, disabling at
+      # the package level because that's one less
+      # hash to define.
+      usePersistenced = false;
+    };
   };
 }
