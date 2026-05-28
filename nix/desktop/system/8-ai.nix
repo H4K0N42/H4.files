@@ -1,11 +1,10 @@
-{ unstable, ... }:
+{ pkgs, ... }:
 {
   services = {
     ollama = {
       enable = false;
-      # package = unstable.ollama-cuda;
+      package = pkgs.ollama-cuda;
       host = "0.0.0.0";
-      acceleration = "cuda";
       models = "/mnt/hdd/AI/linux/ollama/models";
       user = "ollama";
       environmentVariables = {
