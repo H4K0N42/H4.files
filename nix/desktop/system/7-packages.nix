@@ -1,4 +1,9 @@
-{ pkgs, unstable, ... }:
+{
+  pkgs,
+  unstable,
+  inputs,
+  ...
+}:
 {
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages =
@@ -12,7 +17,7 @@
       pciutils
       util-linux
       vscode
-      nixfmt-rfc-style
+      nixfmt
       bluez
       bluez-tools
       wireplumber
@@ -21,7 +26,7 @@
       vulkan-loader
       docker
       docker-compose
-      wineWowPackages.waylandFull
+      wineWow64Packages.waylandFull
       libnotify
       libGL
       gvfs
@@ -58,6 +63,8 @@
       hyprshot
       xdg-desktop-portal-hyprland
       gamescope
+      android-tools
+      xwayland-satellite
     ])
     ++ [
       unstable.zed-editor-fhs
@@ -150,10 +157,13 @@
   # Programs
   programs = {
 
+    niri.enable = true;
+    xwayland.enable = true;
+
     hyprland = {
       enable = true;
       xwayland.enable = true;
-      # package = unstable.hyprland;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     };
 
     hyprlock = {
@@ -197,23 +207,18 @@
       };
     };
 
-    # gamescope = {
+    # bat = {
     #   enable = true;
-    #   capSysNice = true;
+    #   settings = {
+    #     pager = "less";
+    #     paging = "never";
+    #     theme = "ansi";
+    #     style = "plain";
+    #   };
+    #   extraPackages = with pkgs.bat-extras; [
+    #     core
+    #   ];
     # };
-
-    bat = {
-      enable = true;
-      settings = {
-        pager = "less";
-        paging = "never";
-        theme = "ansi";
-        style = "plain";
-      };
-      extraPackages = with pkgs.bat-extras; [
-        core
-      ];
-    };
 
     yazi.enable = true;
     weylus = {
@@ -244,7 +249,6 @@
     noisetorch.enable = true;
     streamcontroller.enable = true;
     gpu-screen-recorder.enable = true;
-    adb.enable = true;
     virt-manager.enable = true;
     gnupg.agent.enable = true;
     gnupg.agent.pinentryPackage = pkgs.pinentry-qt;

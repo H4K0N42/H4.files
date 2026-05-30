@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     # nix-cachyos-kernel = {
@@ -12,8 +12,11 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     maccel.url = "github:Gnarus-G/maccel";
-
-    #    veyon.url = "path:/home/hagen/Documents/veyon-flake";
+    # veyon.url = "github:veyon/veyon";
+    hyprland = {
+      url = "github:hyprwm/Hyprland/v0.52.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -34,7 +34,24 @@
 
   security.polkit.enable = true;
   security.rtkit.enable = true; # Pipewire
-  xdg.portal.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gnome
+    ];
+    config = {
+      common = {
+        default = [
+          "gtk"
+          "gnome"
+        ];
+        "org.freedesktop.impl.portal.Secret" = [
+          "gnome-keyring"
+        ];
+      };
+    };
+  };
 
   qt = {
     enable = true;

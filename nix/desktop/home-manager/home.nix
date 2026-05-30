@@ -103,7 +103,7 @@ in
       filezilla
       burpsuite
       linux-wallpaperengine
-      helvum
+      crosspipe
       kdePackages.kleopatra
       kdePackages.kdenlive
       nomacs
@@ -144,6 +144,7 @@ in
       handbrake
       zoom-us
       mesa-demos
+      proton-vpn
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
