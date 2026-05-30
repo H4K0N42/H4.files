@@ -201,7 +201,7 @@ in
       onChange = "/run/current-system/sw/bin/hyprctl reload";
     };
     ".config/waybar".source = "${dots}/config/waybar";
-    ".config/noctalia".source = "${dots}/config/noctalia/.symlink";
+    ".config/niri/config.kdl".source = "${dots}/config/niri/config.kdl";
   };
 
   # Home Manager can also manage your environment variables through

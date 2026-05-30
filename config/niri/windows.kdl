@@ -1,0 +1,68 @@
+workspace "gaming" {
+    open-on-output "DP-3"
+    layout {
+        always-center-single-column
+            preset-column-widths {proportion 1.0; }
+            default-column-width { proportion 1.0; }
+    }
+}
+workspace "music" {
+    open-on-output "DP-2"
+}
+
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Window-Rules
+
+// Floating
+window-rule {
+    match app-id="^com.mitchellh.ghostty$"
+    match title="Friends List"
+    match title="Steam Settings"
+    match app-id="org.gnome.Nautilus"
+    
+    open-floating true
+}
+
+// Gaming
+window-rule {
+    match app-id=r#"steam_app_[^d].*"#
+    match app-id="gamescope"
+    open-on-workspace "gaming"
+    open-fullscreen true
+}
+
+// Hide
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    match title="Bitwarden Password Manager"
+    block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="tidal-hifi"
+    open-maximized true
+    open-on-workspace "music"
+    open-focused false
+}
+
+window-rule {
+    match app-id="com.mitchellh.ghostty"
+    default-column-width { fixed 1300; }
+    default-window-height { fixed 650; }
+}
+window-rule {
+    match app-id="org.gnome.Nautilus"
+    default-column-width { fixed 1300; }
+    default-window-height { fixed 700; }
+}
+
+
+
+// windowrule = float, class:^(Microsoft.*)$
+// windowrule = float, class:^(RAIL.*)$
+// windowrule = float, class:^(⚙️ Windows Explorer)$
+// windowrule = float, class:^(com.chatterino.)$
+// windowrule = float, class:^(org.gnome.NautilusPreviewer)$
+// windowrule = float, class:^(monologue sound librarian.exe)$  h
