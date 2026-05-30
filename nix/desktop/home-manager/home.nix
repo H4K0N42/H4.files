@@ -145,6 +145,7 @@ in
       zoom-us
       mesa-demos
       proton-vpn
+      noctalia-shell
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
@@ -200,6 +201,7 @@ in
       onChange = "/run/current-system/sw/bin/hyprctl reload";
     };
     ".config/waybar".source = "${dots}/config/waybar";
+    ".config/noctalia".source = "${dots}/config/noctalia/.symlink";
   };
 
   # Home Manager can also manage your environment variables through

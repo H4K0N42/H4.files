@@ -10,15 +10,20 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
+      self,
       nixpkgs,
       home-manager,
       nixpkgs-unstable,
       ...
-    }:
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -33,9 +38,12 @@
     {
       homeConfigurations."hagen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./home.nix ];
+        modules = [
+          inputs.dms.homeModules.dank-material-shell
+          ./home.nix
+        ];
         extraSpecialArgs = {
-          inherit unstable;
+          inherit unstable inputs;
         };
       };
     };

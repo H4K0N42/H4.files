@@ -65,6 +65,7 @@
       gamescope
       android-tools
       xwayland-satellite
+      kdePackages.polkit-kde-agent-1
     ])
     ++ [
       unstable.zed-editor-fhs

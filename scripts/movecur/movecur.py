@@ -20,7 +20,6 @@ def send_command(cmd: str) -> str:
 
 
 def get() -> tuple[int, int]:
-    """Get cursor position via IPC (correct method)"""
     response = send_command("cursorpos")
     x, y = response.split(",")
     return int(x), int(y)
@@ -37,8 +36,6 @@ def move(x: int, y: int):
 # 
 # def move(x, y):
 #     subprocess.run(['hyprctl', 'dispatch', 'movecursor', str(x), str(y)])
-
-
 
 
 y_ = 0
