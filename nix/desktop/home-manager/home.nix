@@ -128,7 +128,6 @@ in
       nwg-look
       mullvad-vpn
       mullvad-browser
-      noriskclient-launcher
       neovim
       lazygit
       dig
@@ -146,6 +145,7 @@ in
       mesa-demos
       proton-vpn
       noctalia-shell
+      fd
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
@@ -157,6 +157,7 @@ in
       unstable.davinci-resolve
       unstable.yt-dlp
       unstable.aseprite
+      unstable.noriskclient-launcher
       (unstable.discord.override {
         withVencord = true;
       })

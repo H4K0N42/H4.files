@@ -53,15 +53,15 @@
       quickshell
       nvd
       smartmontools
-      hyprland-qtutils
-      hyprls
-      hyprpaper
-      hyprsunset
-      hyprpicker
-      hyprland-qt-support
-      hyprpolkitagent
+      # hyprland-qtutils
+      # hyprls
+      # hyprpaper
+      # hyprsunset
+      # hyprpicker
+      # hyprland-qt-support
+      # hyprpolkitagent
       hyprshot
-      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-hyprland
       gamescope
       android-tools
       xwayland-satellite
@@ -162,14 +162,9 @@
     xwayland.enable = true;
 
     hyprland = {
-      enable = true;
+      enable = false;
       xwayland.enable = true;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    };
-
-    hyprlock = {
-      enable = true;
-      # package = unstable.hyprlock;
     };
 
     steam = {

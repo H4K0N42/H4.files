@@ -2,8 +2,8 @@ workspace "gaming" {
     open-on-output "DP-3"
     layout {
         always-center-single-column
-            preset-column-widths {proportion 1.0; }
-            default-column-width { proportion 1.0; }
+        preset-column-widths {proportion 1.0; }
+        default-column-width { proportion 1.0; }
     }
 }
 workspace "music" {
@@ -20,7 +20,7 @@ window-rule {
     match title="Friends List"
     match title="Steam Settings"
     match app-id="org.gnome.Nautilus"
-    
+
     open-floating true
 }
 
@@ -28,8 +28,12 @@ window-rule {
 window-rule {
     match app-id=r#"steam_app_[^d].*"#
     match app-id="gamescope"
+    match app-id="(unset)"
+
     open-on-workspace "gaming"
     open-fullscreen true
+    open-focused true
+    variable-refresh-rate true
 }
 
 // Hide
@@ -52,17 +56,16 @@ window-rule {
     default-column-width { fixed 1300; }
     default-window-height { fixed 650; }
 }
+
 window-rule {
     match app-id="org.gnome.Nautilus"
     default-column-width { fixed 1300; }
     default-window-height { fixed 700; }
 }
 
-
-
-// windowrule = float, class:^(Microsoft.*)$
-// windowrule = float, class:^(RAIL.*)$
-// windowrule = float, class:^(⚙️ Windows Explorer)$
-// windowrule = float, class:^(com.chatterino.)$
-// windowrule = float, class:^(org.gnome.NautilusPreviewer)$
-// windowrule = float, class:^(monologue sound librarian.exe)$  h
+window-rule {
+    match app-id="steam" title=r#"notificationtoasts*"#
+    open-on-output "DP-2"
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+    open-focused false
+}

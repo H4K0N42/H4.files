@@ -108,6 +108,11 @@ binds {
     Super+Ctrl+Shift+WheelScrollDown { move-column-right; }
     Super+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
+    Super+Page_Up { focus-monitor-up; }
+    Super+Page_Down { focus-monitor-down; }
+    Super+Shift+Page_Up { move-column-to-monitor-up; }
+    Super+Shift+Page_Down { move-column-to-monitor-down; }
+    
     // Similarly, you can bind touchpad scroll "ticks".
     // Touchpad scrolling is continuous, so for these binds it is split into
     // discrete intervals.
@@ -242,6 +247,7 @@ binds {
     Super+Shift+P { power-off-monitors; }
     
     Super+N repeat=false { spawn-sh "code /home/hagen/.local/share/quicklink/"; }
+    Super+Shift+N repeat=false { spawn-sh "zeditor /home/hagen/.local/share/quicklink/"; }
     Super+Q repeat=false { spawn "zen-beta"; }
     Super+O repeat=false { spawn-sh "scrcpy --render-driver=opengl"; }
     Super+S repeat=false { spawn-sh "ghostty --title='Soundboard' --background-opacity=0.5 -e bash ~/scripts/soundboard/quick.sh"; }

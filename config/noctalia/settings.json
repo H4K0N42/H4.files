@@ -18,6 +18,8 @@
         "ignoreMouseInput": false,
         "overviewLayer": true,
         "pinnedApps": [
+            "zen-beta",
+            "discord"
         ],
         "position": "center",
         "screenshotAnnotationTool": "",
@@ -111,33 +113,46 @@
                     "id": "SessionMenu"
                 },
                 {
-                    "compactMode": true,
-                    "diskPath": "/",
-                    "iconColor": "none",
-                    "id": "SystemMonitor",
-                    "showCpuCores": false,
-                    "showCpuFreq": false,
-                    "showCpuTemp": false,
-                    "showCpuUsage": true,
-                    "showDiskAvailable": false,
-                    "showDiskUsage": false,
-                    "showDiskUsageAsPercent": false,
-                    "showGpuTemp": false,
-                    "showLoadAverage": false,
-                    "showMemoryAsPercent": true,
-                    "showMemoryUsage": true,
-                    "showNetworkStats": false,
-                    "showSwapUsage": false,
-                    "textColor": "none",
-                    "useMonospaceFont": true,
-                    "usePadding": true
+                    "colorizeSystemIcon": "none",
+                    "colorizeSystemText": "none",
+                    "generalTooltipText": "Click to open nvidia-smi",
+                    "hideMode": "alwaysExpanded",
+                    "icon": "cube-3d-sphere",
+                    "iconPosition": "left",
+                    "id": "CustomButton",
+                    "ipcIdentifier": "",
+                    "leftClickExec": "ghostty -e watch -n 1 nvidia-smi",
+                    "leftClickUpdateText": false,
+                    "maxTextLength": {
+                        "horizontal": 32,
+                        "vertical": 10
+                    },
+                    "middleClickExec": "",
+                    "middleClickUpdateText": false,
+                    "parseJson": false,
+                    "rightClickExec": "",
+                    "rightClickUpdateText": false,
+                    "showExecTooltip": false,
+                    "showIcon": false,
+                    "showTextTooltip": false,
+                    "textCollapse": "",
+                    "textCommand": "read cpu user nice system idle iowait irq softirq steal _ < /proc/stat; prev_idle=$idle; prev_total=$((user+nice+system+idle+iowait+irq+softirq+steal)); sleep 0.45; read cpu user nice system idle iowait irq softirq steal _ < /proc/stat; total=$((user+nice+system+idle+iowait+irq+softirq+steal)); diff_idle=$((idle-prev_idle)); diff_total=$((total-prev_total)); cpu=$((100*(diff_total-diff_idle)/diff_total)); gpu=$(nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total --format=csv,noheader,nounits | awk -F',' '{gsub(/ /,\"\",$0); print int($1), int($2/$3*100)}'); printf \"CPU GPU RAM VRM\\n%3d %3d %3d %3d\\n\" \"$cpu\" \"$(cut -d' ' -f1 <<< \"$gpu\")\" \"$(free | awk '/Mem/{print int($3/$2*100)}')\" \"$(cut -d' ' -f2 <<< \"$gpu\")\"",
+                    "textIntervalMs": 1000,
+                    "textStream": false,
+                    "wheelDownExec": "",
+                    "wheelDownUpdateText": false,
+                    "wheelExec": "",
+                    "wheelMode": "unified",
+                    "wheelUpExec": "",
+                    "wheelUpUpdateText": false,
+                    "wheelUpdateText": false
                 },
                 {
                     "compactMode": true,
                     "hideMode": "idle",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
-                    "maxWidth": 1000,
+                    "maxWidth": 32,
                     "panelShowAlbumArt": true,
                     "scrollingMode": "never",
                     "showAlbumArt": true,
@@ -181,10 +196,6 @@
                     "id": "NotificationHistory",
                     "showUnreadBadge": true,
                     "unreadBadgeColor": "secondary"
-                },
-                {
-                    "iconColor": "none",
-                    "id": "WallpaperSelector"
                 },
                 {
                     "clockColor": "none",
@@ -402,7 +413,7 @@
         "showScreenCorners": true,
         "showSessionButtonsOnLockScreen": true,
         "smoothScrollEnabled": true,
-        "telemetryEnabled": false
+        "telemetryEnabled": true
     },
     "hooks": {
         "colorGeneration": "",
@@ -472,7 +483,7 @@
     "notifications": {
         "backgroundOpacity": 1,
         "clearDismissed": true,
-        "criticalUrgencyDuration": 15,
+        "criticalUrgencyDuration": 10,
         "density": "default",
         "enableBatteryToast": true,
         "enableKeyboardLayoutToast": true,
@@ -484,9 +495,9 @@
         "monitors": [
             "DP-3"
         ],
-        "normalUrgencyDuration": 8,
+        "normalUrgencyDuration": 5,
         "overlayLayer": true,
-        "respectExpireTimeout": false,
+        "respectExpireTimeout": true,
         "saveToHistory": {
             "critical": true,
             "low": true,
@@ -551,21 +562,21 @@
             },
             {
                 "action": "shutdown",
-                "command": "",
+                "command": "killall -SIGINT gpu-screen-recorder & systemctl poweroff",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "4"
             },
             {
                 "action": "reboot",
-                "command": "",
+                "command": "killall -SIGINT gpu-screen-recorder & systemctl reboot",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "5"
             },
             {
                 "action": "userspaceReboot",
-                "command": "",
+                "command": "killall -SIGINT gpu-screen-recorder & systemctl-soft-reboot",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "6"
@@ -614,6 +625,10 @@
     },
     "templates": {
         "activeTemplates": [
+            {
+                "enabled": true,
+                "id": "zed"
+            }
         ],
         "enableUserTheming": false
     },
@@ -692,7 +707,7 @@
         "useOriginalImages": false,
         "useSolidColor": false,
         "useWallhaven": false,
-        "viewMode": "single",
+        "viewMode": "recursive",
         "wallhavenApiKey": "",
         "wallhavenCategories": "111",
         "wallhavenOrder": "desc",

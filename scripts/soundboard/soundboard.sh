@@ -9,7 +9,10 @@ fi
 
 FILE=~/Documents/Soundboard/Hagen/"$1"
 
+VOLUME_PERCENT=80
+VOLUME=$((65536 * VOLUME_PERCENT / 100))
+
 trap '' HUP
 
-paplay --device=SoundboardSink "$FILE" &
-paplay --device=@DEFAULT_SINK@ "$FILE" &
+paplay --volume="$VOLUME" --device=SoundboardSink "$FILE" &
+paplay --volume="$VOLUME" --device=@DEFAULT_SINK@ "$FILE" &
