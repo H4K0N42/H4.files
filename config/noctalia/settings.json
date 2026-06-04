@@ -238,7 +238,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "GitHub Dark",
+        "predefinedScheme": "Lilac AMOLED",
         "schedulingMode": "off",
         "syncGsettings": true,
         "useWallpaperColors": false
@@ -628,6 +628,10 @@
             {
                 "enabled": true,
                 "id": "zed"
+            },
+            {
+                "enabled": true,
+                "id": "discord"
             }
         ],
         "enableUserTheming": false
@@ -654,14 +658,14 @@
         "favorites": [
             {
                 "appearance": "dark",
-                "colorScheme": "GitHub Dark",
+                "colorScheme": "Lilac AMOLED",
                 "darkMode": true,
                 "generationMethod": "tonal-spot",
                 "paletteColors": [
-                    "#58a6ff",
-                    "#bc8cff",
-                    "#bc8cff",
-                    "#f85149"
+                    "#b58fff",
+                    "#c79aff",
+                    "#d8b4ff",
+                    "#ff6f9b"
                 ],
                 "path": "/home/hagen/wallpapers/2024-04-27_14.35.02.png",
                 "useWallpaperColors": false

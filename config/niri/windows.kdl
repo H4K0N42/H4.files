@@ -16,10 +16,11 @@ workspace "music" {
 
 // Floating
 window-rule {
-    match app-id="^com.mitchellh.ghostty$"
+    // match app-id="^com.mitchellh.ghostty$"
     match title="Friends List"
     match title="Steam Settings"
-    match app-id="org.gnome.Nautilus"
+    // match app-id="org.gnome.Nautilus"
+    match title="Soundboard"
 
     open-floating true
 }
