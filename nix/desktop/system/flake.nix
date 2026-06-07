@@ -16,7 +16,8 @@
       url = "github:hyprwm/Hyprland/v0.52.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    veyon.url = "github:veyon/veyon";
+    # veyon.url = "github:veyon/veyon";
+    # veyon.url = "path:/home/hagen/Documents/GitHub/veyon";
   };
 
   outputs =

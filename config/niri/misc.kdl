@@ -16,18 +16,7 @@ cursor {
 
 screenshot-path null
 
-// Animation settings.
-// The wiki explains how to configure individual animations:
-// https://niri-wm.github.io/niri/Configuration:-Animations
-animations {
-    // Uncomment to turn off all animations.
-    // off
-
-    // Slow down all animations by this factor. Values below 1 speed them up instead.
-    // slowdown 3.0
-}
-
 debug {
   // Allows notification actions and window activation from Noctalia.
-  honor-xdg-activation-with-invalid-serial
+  // honor-xdg-activation-with-invalid-serial
 }

@@ -81,6 +81,17 @@
 
     displayManager.ly.enable = true;
 
+    greetd = {
+      enable = false;
+      settings = rec {
+        initial_session = {
+          command = "niri-session";
+          user = "hagen";
+        };
+        default_session = initial_session; # note: this probably isn't what you want (you might want to use tuigreet or something)
+      };
+    };
+
     # displayManager.sddm = {
     #   enable = true;
     #   wayland.enable = true;

@@ -1,6 +1,8 @@
 
 spawn-sh-at-startup "sleep 2; niri msg action focus-monitor DP-2 && niri msg action focus-workspace 2 && niri msg action focus-monitor DP-3 && niri msg action focus-workspace 2 && bash /home/hagen/scripts/update.sh"
 spawn-sh-at-startup "noctalia-shell -d"
+spawn-at-startup "vicinae" "server"
+
 
 spawn-sh-at-startup "streamcontroller -b --close-running"
 spawn-sh-at-startup "sleep 3; com.github.wwmm.easyeffects -w"

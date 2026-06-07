@@ -112,7 +112,7 @@ binds {
     Super+Page_Down { focus-monitor-down; }
     Super+Shift+Page_Up { move-column-to-monitor-up; }
     Super+Shift+Page_Down { move-column-to-monitor-down; }
-    
+
     // Similarly, you can bind touchpad scroll "ticks".
     // Touchpad scrolling is continuous, so for these binds it is split into
     // discrete intervals.
@@ -245,7 +245,7 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Super+Shift+P { power-off-monitors; }
-    
+
     Super+N repeat=false { spawn-sh "code /home/hagen/.local/share/quicklink/"; }
     Super+Shift+N repeat=false { spawn-sh "zeditor /home/hagen/.local/share/quicklink/"; }
     Super+Q repeat=false { spawn "zen-beta"; }
@@ -258,6 +258,12 @@ binds {
     Shift+F8 repeat=false { spawn-sh "notify-send 'Not captured' && ~/scripts/soundboard/soundboard.sh /sfx/video_speichern.mp3"; }
     Alt+F8 repeat=false { spawn-sh "killall -SIGUSR1 gpu-screen-recorder && notify-send 'Clip Captured'"; }
 
-    Super+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-    Super+V { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
+    // Super+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+    // Super+V { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
+    Super+Space { spawn "vicinae" "vicinae://toggle"; }
+    Super+V { spawn "vicinae" "vicinae://launch/clipboard/history"; }
+
+    Super+L { spawn-sh "niri msg action do-screen-transition && noctalia-shell ipc call lockScreen lock";}
+
+    Super+Shift+A {spawn-sh "bash ~/scripts/get_open_window.sh";}
 }

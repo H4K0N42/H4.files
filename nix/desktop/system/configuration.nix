@@ -15,7 +15,14 @@
     ./7-packages.nix
     ./8-ai.nix
     inputs.maccel.nixosModules.default
+    # inputs.veyon.nixosModules.default
   ];
+
+  # services.veyon = {
+  #   enable = true;
+  #   enableService = true;
+  #   enableMaster = true;
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

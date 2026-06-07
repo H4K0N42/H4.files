@@ -9,7 +9,7 @@
         "density": "default",
         "enableClipPreview": true,
         "enableClipboardChips": true,
-        "enableClipboardHistory": true,
+        "enableClipboardHistory": false,
         "enableClipboardSmartIcons": true,
         "enableSessionSearch": true,
         "enableSettingsSearch": true,
@@ -356,7 +356,7 @@
         "animationDisabled": false,
         "animationSpeed": 1,
         "autoStartAuth": false,
-        "avatarImage": "/home/hagen/.face",
+        "avatarImage": "/home/hagen/Pictures/NixClip2.png",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",
         "clockStyle": "digital",
@@ -398,6 +398,7 @@
         "lockScreenBlur": 0.5,
         "lockScreenCountdownDuration": 10000,
         "lockScreenMonitors": [
+            "DP-3"
         ],
         "lockScreenTint": 0,
         "passwordChars": true,
@@ -555,7 +556,7 @@
             },
             {
                 "action": "suspend",
-                "command": "",
+                "command": "niri msg action power-off-monitors",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "3"

@@ -146,6 +146,9 @@ in
       proton-vpn
       noctalia-shell
       fd
+      (discord.override {
+        withVencord = true;
+      })
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
@@ -158,9 +161,6 @@ in
       unstable.yt-dlp
       unstable.aseprite
       unstable.noriskclient-launcher
-      (unstable.discord.override {
-        withVencord = true;
-      })
       # unstable.winboat
     ];
 
