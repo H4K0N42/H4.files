@@ -12,10 +12,10 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     maccel.url = "github:Gnarus-G/maccel";
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.52.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/v0.52.1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # veyon.url = "github:veyon/veyon";
     # veyon.url = "path:/home/hagen/Documents/GitHub/veyon";
   };

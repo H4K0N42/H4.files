@@ -163,8 +163,10 @@ binds {
 
     // Consume one window from the right to the bottom of the focused column.
     Super+Comma  { consume-window-into-column; }
+    Super+Ctrl+Left  { consume-window-into-column; }
     // Expel the bottom window from the focused column to the right.
     Super+Period { expel-window-from-column; }
+    Super+Ctrl+Right  { expel-window-from-column; }
 
     // Cycle through widths set in preset-column-widths.
     Super+D { switch-preset-column-width; }

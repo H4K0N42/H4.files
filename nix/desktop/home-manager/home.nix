@@ -1,7 +1,7 @@
 {
-  config,
   pkgs,
   unstable,
+  inputs,
   ...
 }:
 let
@@ -146,8 +146,8 @@ in
       proton-vpn
       noctalia-shell
       fd
-      (discord.override {
-        withVencord = true;
+      (inputs.zen-browser.packages."${system}".default.override {
+        nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
       ###############
       (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
@@ -161,6 +161,9 @@ in
       unstable.yt-dlp
       unstable.aseprite
       unstable.noriskclient-launcher
+      (unstable.discord.override {
+        withVencord = true;
+      })
       # unstable.winboat
     ];
 
@@ -225,7 +228,7 @@ in
     NIXPKGS_ALLOW_UNFREE = "1";
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
-    __NV_DISABLE_EXPLICIT_SYNC = "1";
+    # __NV_DISABLE_EXPLICIT_SYNC = "1";
   };
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
