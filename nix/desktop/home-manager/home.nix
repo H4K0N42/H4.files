@@ -146,7 +146,7 @@ in
       proton-vpn
       noctalia-shell
       fd
-      (inputs.zen-browser.packages."${system}".default.override {
+      (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
       ###############
@@ -229,6 +229,8 @@ in
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
     # __NV_DISABLE_EXPLICIT_SYNC = "1";
+    NH_OS_FLAKE = "/etc/nixos";
+    NH_HOME_FLAKE = "~/.config/home-manager";
   };
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

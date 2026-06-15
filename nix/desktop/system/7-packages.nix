@@ -52,6 +52,7 @@
       nix-tree
       quickshell
       nvd
+      nil
       smartmontools
       # hyprland-qtutils
       # hyprls
@@ -168,6 +169,15 @@
 
   # Programs
   programs = {
+
+    nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        dates = "daily";
+        extraArgs = "--keep 5 --keep-since 7d --optimise";
+      };
+    };
 
     niri.enable = true;
     xwayland.enable = true;

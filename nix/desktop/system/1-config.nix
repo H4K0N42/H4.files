@@ -86,7 +86,7 @@
     };
 
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "daily";
       persistent = true;
       options = "--delete-older-than 7d";
