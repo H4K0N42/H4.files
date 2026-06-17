@@ -30,6 +30,7 @@ window-rule {
     match app-id=r#"steam_app_[^d].*"#
     match app-id="gamescope"
     match app-id="(unset)"
+    match app-id="Minecraft"
 
     open-on-workspace "gaming"
     open-fullscreen true

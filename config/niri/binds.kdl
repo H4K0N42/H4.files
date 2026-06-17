@@ -91,22 +91,21 @@ binds {
     // To avoid scrolling through workspaces really fast, you can use
     // the cooldown-ms property. The bind will be rate-limited to this value.
     // You can set a cooldown on any bind, but it's most useful for the wheel.
-    Super+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
-    Super+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
-    Super+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-    Super+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    Super+Shift+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Super+Shift+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Super+Ctrl+Shift+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Super+Ctrl+Shift+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+
+    Super+WheelScrollDown      { focus-column-right; }
+    Super+WheelScrollUp        { focus-column-left; }
+    Super+Ctrl+WheelScrollDown { move-column-right; }
+    Super+Ctrl+WheelScrollUp   { move-column-left; }
 
     Super+WheelScrollRight      { focus-column-right; }
     Super+WheelScrollLeft       { focus-column-left; }
-    Super+Ctrl+WheelScrollRight { move-column-right; }
-    Super+Ctrl+WheelScrollLeft  { move-column-left; }
+    Super+Shift+WheelScrollRight { move-column-right; }
+    Super+Shift+WheelScrollLeft  { move-column-left; }
 
-    // Usually scrolling up and down with Shift in applications results in
-    // horizontal scrolling; these binds replicate that.
-    Super+Shift+WheelScrollDown      { focus-column-right; }
-    Super+Shift+WheelScrollUp        { focus-column-left; }
-    Super+Ctrl+Shift+WheelScrollDown { move-column-right; }
-    Super+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
     Super+Page_Up { focus-monitor-up; }
     Super+Page_Down { focus-monitor-down; }

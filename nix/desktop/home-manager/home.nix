@@ -181,18 +181,6 @@ in
   #   icon = "application-x-executable"; # Or a proper icon if you have one
   # };
 
-  xdg.desktopEntries.norisk = {
-    name = "NoRisk Client";
-    exec = "bash /home/hagen/scripts/norisk.sh";
-    terminal = false;
-    type = "Application";
-    categories = [
-      "Game"
-      "Utility"
-    ];
-    icon = "application-x-executable"; # Or a proper icon if you have one
-  };
-
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -230,7 +218,7 @@ in
     TERMINAL = "ghostty";
     # __NV_DISABLE_EXPLICIT_SYNC = "1";
     NH_OS_FLAKE = "/etc/nixos";
-    NH_HOME_FLAKE = "~/.config/home-manager";
+    NH_HOME_FLAKE = "/home/hagen/.config/home-manager";
   };
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
