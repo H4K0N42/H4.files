@@ -198,6 +198,12 @@
                     "unreadBadgeColor": "secondary"
                 },
                 {
+                    "displayMode": "alwaysShow",
+                    "iconColor": "none",
+                    "id": "VPN",
+                    "textColor": "none"
+                },
+                {
                     "clockColor": "none",
                     "customFont": "JetBrainsMono NFM",
                     "formatHorizontal": "HH:mm:ss\\nyyyy-MM-dd",

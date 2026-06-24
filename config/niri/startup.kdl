@@ -17,6 +17,7 @@ spawn-sh-at-startup "cd /home/hagen/docker/webping/ && docker compose up -d"
 
 spawn-sh-at-startup "sleep 2; steam -silent"
 spawn-at-startup "tidal-hifi"
+spawn-at-startup "discord"
 spawn-sh-at-startup "sleep 5; eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)"
 
 spawn-sh-at-startup "sleep 3; bluetoothctl connect 2C:BE:EB:4B:F9:90"

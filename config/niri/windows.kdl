@@ -6,8 +6,23 @@ workspace "gaming" {
         default-column-width { proportion 1.0; }
     }
 }
+
 workspace "music" {
     open-on-output "DP-2"
+    layout {
+        always-center-single-column
+        preset-column-widths { proportion 1.0; }
+        default-column-width { proportion 1.0; }
+    }
+}
+
+workspace "dc" {
+    open-on-output "DP-2"
+    layout {
+        always-center-single-column
+        preset-column-widths { proportion 1.0; }
+        default-column-width { proportion 1.0; }
+    }
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -31,6 +46,7 @@ window-rule {
     match app-id="gamescope"
     match app-id="(unset)"
     match app-id="Minecraft"
+    match app-id="factorio"
 
     open-on-workspace "gaming"
     open-fullscreen true
@@ -51,6 +67,12 @@ window-rule {
     open-maximized true
     open-on-workspace "music"
     open-focused false
+}
+
+window-rule {
+    match app-id="discord"
+    open-maximized true
+    open-on-workspace "dc"
 }
 
 window-rule {
@@ -78,4 +100,13 @@ window-rule {
     open-on-output "DP-3"
     open-floating true
     open-focused true
+}
+
+window-rule {
+    match is-window-cast-target=true
+        border {
+        active-gradient from="#ff0000ee" to="#ff7000ee"  angle=135
+        inactive-gradient from="#ff000070" to="#ff700070"  angle=135
+        urgent-gradient from="#ff0000ee" to="#ff0000ee" angle=135
+    }
 }

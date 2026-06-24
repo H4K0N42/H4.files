@@ -3,7 +3,6 @@ environment {
     __GLX_VENDOR_LIBRARY_NAME "nvidia"
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     GTK_THEME "Adwaita2"
-    // GBM_BACKEND "nvidia-drm"
 }
 
 hotkey-overlay {
@@ -19,5 +18,5 @@ screenshot-path null
 
 debug {
   // Allows notification actions and window activation from Noctalia.
-  // honor-xdg-activation-with-invalid-serial
+  honor-xdg-activation-with-invalid-serial
 }
