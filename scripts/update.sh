@@ -3,6 +3,7 @@
 if [[ "$TERM" != "xterm-ghostty" ]]; then
     exec ghostty --title=fexec -e "bash" ~/scripts/update.sh
 fi
+exec ghostty --title=fexec -e "bash" ~/scripts/update2.sh
 
 nh os switch -u
 echo
