@@ -78,7 +78,7 @@ window-rule {
 window-rule {
     match app-id="com.mitchellh.ghostty"
     default-column-width { proportion 0.5; } // fixed 1300;
-    default-window-height { proportion 0.5; } // fixed 650;
+    // default-window-height { proportion 0.5; } // fixed 650;
 }
 
 window-rule {

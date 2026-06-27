@@ -146,6 +146,8 @@ in
       proton-vpn
       noctalia-shell
       fd
+      gh
+      makemkv
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })

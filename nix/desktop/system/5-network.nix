@@ -1,13 +1,18 @@
+{ pkgs, ... }:
 {
   networking = {
     hostName = "notoast";
-    # wireless.enable = true;
 
     networkmanager.enable = true;
+    networkmanager.plugins = with pkgs; [
+      networkmanager-openvpn
+    ];
+
     nameservers = [
       "192.168.178.150"
       "192.168.178.1"
     ];
+
     interfaces.enp5s0.wakeOnLan.enable = true;
 
     firewall.enable = false;

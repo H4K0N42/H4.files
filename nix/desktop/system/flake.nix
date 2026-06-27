@@ -17,7 +17,7 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     # veyon.url = "github:veyon/veyon";
-    # veyon.url = "git+https://github.com/H4K0N42/veyon.git?submodules=1";
+    # veyon.url = "git+https://github.com/veyon/veyon.git?submodules=1";
     # veyon.url = "path:/home/hagen/Documents/GitHub/veyon";
   };
 

@@ -555,7 +555,7 @@
             },
             {
                 "action": "logout",
-                "command": "",
+                "command": "niri msg action quit -s",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "2"
@@ -569,14 +569,14 @@
             },
             {
                 "action": "shutdown",
-                "command": "killall -SIGINT gpu-screen-recorder & systemctl poweroff",
+                "command": " niri msg action quit -s & systemctl poweroff",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "4"
             },
             {
                 "action": "reboot",
-                "command": "killall -SIGINT gpu-screen-recorder & systemctl reboot",
+                "command": "niri msg action quit -s & systemctl reboot",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "5"
