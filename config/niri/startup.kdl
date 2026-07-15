@@ -3,8 +3,6 @@ spawn-sh-at-startup "sleep 2; niri msg action focus-monitor DP-2 && niri msg act
 spawn-sh-at-startup "noctalia-shell -d"
 spawn-at-startup "vicinae" "server"
 
-
-spawn-sh-at-startup "streamcontroller -b --close-running"
 spawn-sh-at-startup "sleep 3; com.github.wwmm.easyeffects -w"
 
 spawn-sh-at-startup "com.artemis_rgb.Artemis --minimized"
@@ -21,6 +19,6 @@ spawn-at-startup "discord"
 spawn-sh-at-startup "sleep 5; eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)"
 
 spawn-sh-at-startup "sleep 3; bluetoothctl connect 2C:BE:EB:4B:F9:90"
-spawn-sh-at-startup "gpu-screen-recorder -w DP-3 -c mp4 -k h265 -s 2560x1440 -f 30 -a 'default_output|app-inverse:Chromium|app-inverse:WEBRTC VoiceEngine|app-inverse:Zen' -a 'app:WEBRTC VoiceEngine'  -a 'app:Zen' -a 'default_input' -q high -r 180 -o /home/hagen/Videos/Clips"
+spawn-sh-at-startup "sh /home/hagen/scripts/gpu-screen-recorder_wrapper.sh"
 
 spawn-sh-at-startup "sleep 5; /nix/store/$(ls -la /nix/store | grep 'polkit-kde-agent' | grep '^d' | awk '{print $9}')/libexec/polkit-kde-authentication-agent-1"

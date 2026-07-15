@@ -67,6 +67,8 @@
       android-tools
       xwayland-satellite
       kdePackages.polkit-kde-agent-1
+      libXrandr
+      libX11
     ])
     ++ [
       unstable.zed-editor-fhs

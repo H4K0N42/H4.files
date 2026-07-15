@@ -4,24 +4,31 @@ workspace "gaming" {
         always-center-single-column
         preset-column-widths { proportion 1.0; }
         default-column-width { proportion 1.0; }
+        border {
+            active-gradient from="#0096ffee" to="#ff0096ee" angle=315 relative-to="workspace-view"
+        }
     }
 }
 
 workspace "music" {
     open-on-output "DP-2"
     layout {
-        always-center-single-column
         preset-column-widths { proportion 1.0; }
         default-column-width { proportion 1.0; }
+        border {
+            active-gradient from="#0096ffee" to="#ff0096ee" angle=315 relative-to="workspace-view"
+        }
     }
 }
 
 workspace "dc" {
     open-on-output "DP-2"
     layout {
-        always-center-single-column
         preset-column-widths { proportion 1.0; }
         default-column-width { proportion 1.0; }
+        border {
+            active-gradient from="#0096ffee" to="#ff0096ee" angle=315 relative-to="workspace-view"
+        }
     }
 }
 
@@ -78,7 +85,13 @@ window-rule {
 window-rule {
     match app-id="com.mitchellh.ghostty"
     default-column-width { proportion 0.5; } // fixed 1300;
-    // default-window-height { proportion 0.5; } // fixed 650;
+}
+
+window-rule {
+    match title="fexec"
+    match title="Soundboard"
+    default-column-width { proportion 0.5; } // fixed 1300;
+    default-window-height { proportion 0.5; } // fixed 650;
 }
 
 window-rule {

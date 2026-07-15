@@ -148,6 +148,11 @@ in
       fd
       gh
       makemkv
+      stoat-desktop
+      noriskclient-launcher
+      davinci-resolve
+      aseprite
+      tidal-hifi
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
@@ -157,12 +162,8 @@ in
     ++ [
       unstable.opencode
       unstable.heroic
-      unstable.tidal-hifi
       unstable.badlion-client
-      unstable.davinci-resolve
       unstable.yt-dlp
-      unstable.aseprite
-      unstable.noriskclient-launcher
       (unstable.discord.override {
         withVencord = true;
       })
