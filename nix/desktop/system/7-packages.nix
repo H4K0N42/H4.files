@@ -266,7 +266,6 @@
     nix-index.enable = true;
     java.enable = true;
     noisetorch.enable = true;
-    streamcontroller.enable = true;
     gpu-screen-recorder.enable = true;
     virt-manager.enable = true;
     gnupg.agent.enable = true;
