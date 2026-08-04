@@ -1,0 +1,14 @@
+[default]
+num_stack = 0
+column_bounds = [2, 2] # niri indexing starts at 1
+maximize_solos_on_open = false
+maximize_solos_on_close = false
+collapse_solos_on_open = false
+allow_outer_stack = true
+apply_to_moved_windows = false
+autostack_last_column_only = false
+right_to_left = false
+action_maximize = "MaximizeColumn" # or "MaximizeWindowToEdges" or "FullscreenWindow"
+autostack_into_row_gaps = "strict"
+disabled = false
+

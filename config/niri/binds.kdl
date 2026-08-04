@@ -266,5 +266,6 @@ binds {
 
     Super+L { spawn-sh "niri msg action do-screen-transition && noctalia-shell ipc call lockScreen lock";}
 
-    Super+Shift+A {spawn-sh "bash ~/scripts/get_open_window.sh";}
+    Super+Shift+A { spawn-sh "bash ~/scripts/get_open_window.sh"; }
+    Super+Return { set-dynamic-cast-window; }
 }

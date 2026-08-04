@@ -1,0 +1,4 @@
+[submodule "scripts/external/niri_tweaks"]
+	path = scripts/external/niri_tweaks
+	url = https://github.com/heyoeyo/niri_tweaks
+        branch = main

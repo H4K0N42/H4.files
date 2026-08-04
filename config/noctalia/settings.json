@@ -570,21 +570,21 @@
             },
             {
                 "action": "shutdown",
-                "command": " niri msg action quit -s & systemctl poweroff",
+                "command": "killall gpu-screen-recorder & systemctl poweroff",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "4"
             },
             {
                 "action": "reboot",
-                "command": "niri msg action quit -s & systemctl reboot",
+                "command": "killall gpu-screen-recorder & systemctl reboot",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "5"
             },
             {
                 "action": "userspaceReboot",
-                "command": "killall -SIGINT gpu-screen-recorder & systemctl-soft-reboot",
+                "command": "killall gpu-screen-recorder & systemctl-soft-reboot",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "6"

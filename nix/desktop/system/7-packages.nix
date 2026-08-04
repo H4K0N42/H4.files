@@ -67,10 +67,9 @@
       android-tools
       xwayland-satellite
       kdePackages.polkit-kde-agent-1
-      libXrandr
-      libX11
     ])
     ++ [
+      unstable.protonplus
       unstable.zed-editor-fhs
     ];
   # Services
@@ -183,6 +182,13 @@
 
     niri.enable = true;
     xwayland.enable = true;
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        stdenv.cc.cc
+      ];
+    };
 
     hyprland = {
       enable = false;

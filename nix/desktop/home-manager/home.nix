@@ -26,10 +26,8 @@ in
     enableBashIntegration = true;
   };
   programs.ghostty.enable = true;
-  programs.waybar.enable = true;
-  programs.vicinae = {
-    enable = true;
-  };
+  programs.superfile.enable = true;
+  programs.vicinae.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = false;
@@ -149,15 +147,17 @@ in
       gh
       makemkv
       stoat-desktop
-      noriskclient-launcher
       davinci-resolve
       aseprite
       tidal-hifi
+      noriskclient-launcher
+      xrandr
+      beeper
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
       ###############
-      (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
+      # (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
       unstable.opencode
@@ -197,6 +197,12 @@ in
     };
     ".config/waybar".source = "${dots}/config/waybar";
     ".config/niri/config.kdl".source = "${dots}/config/niri/config.kdl";
+    ".config/niri/tilemod_config.toml".source = "${dots}/config/niri/tilemod_config.toml";
+
+    ".local/bin/java8".source = "${pkgs.temurin-bin-8}/bin/java";
+    ".local/bin/java17".source = "${pkgs.temurin-bin-17}/bin/java";
+    ".local/bin/java21".source = "${pkgs.temurin-bin-21}/bin/java";
+    ".local/bin/java25".source = "${pkgs.temurin-bin-25}/bin/java";
   };
 
   # Home Manager can also manage your environment variables through
@@ -215,11 +221,16 @@ in
   #
   #  /etc/profiles/per-user/hagen/etc/profile.d/hm-session-vars.sh
   #
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   home.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = "1";
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
-    # __NV_DISABLE_EXPLICIT_SYNC = "1";
+    PROTON_ENABLE_WAYLAND = "1";
     NH_OS_FLAKE = "/etc/nixos";
     NH_HOME_FLAKE = "/home/hagen/.config/home-manager";
   };
