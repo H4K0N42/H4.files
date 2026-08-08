@@ -25,6 +25,7 @@
         "dialout"
         "maccel"
         "nextcloud"
+        "i2c"
       ];
     };
     groups.nextcloud = {

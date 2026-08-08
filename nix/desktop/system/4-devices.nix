@@ -9,28 +9,31 @@
   #   }
   # ];
 
-  hardware.sane = {
-    enable = true;
-    extraBackends = [
-      pkgs.hplipWithPlugin
-      pkgs.sane-airscan
-    ];
-  };
-
-  hardware.maccel = {
-    enable = true;
-    enableCli = true; # Optional: for parameter discovery
-    parameters = {
-      sensMultiplier = 0.6;
-      inputDpi = 1600.0;
-      mode = "no_accel";
-
-      # decayRate = 0.3;
-      # offset = 0.5;
-      # limit = 1.8;
+  hardware = {
+    sane = {
+      enable = true;
+      extraBackends = [
+        pkgs.hplipWithPlugin
+        pkgs.sane-airscan
+      ];
     };
-  };
 
+    maccel = {
+      enable = true;
+      enableCli = true; # Optional: for parameter discovery
+      parameters = {
+        sensMultiplier = 0.6;
+        inputDpi = 1600.0;
+        mode = "no_accel";
+
+        # decayRate = 0.3;
+        # offset = 0.5;
+        # limit = 1.8;
+      };
+    };
+
+    i2c.enable = true;
+  };
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0135", TAG+="uaccess", TAG+="CMEDIA_Q9_1"
     SUBSYSTEMS=="usb|hidraw", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="0c04", TAG+="uaccess", TAG+="RAZER_Firefly_V2"
@@ -72,22 +75,10 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="00ba", MODE="0660", TAG+="uaccess"
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="00c6", MODE="0660", TAG+="uaccess"
 
-  '';
+    SUBSYSTEM=="i2c-dev", MODE="0666"
+    KERNEL=="i2c-[0-9]*", MODE="0666"
 
-  fileSystems."/mnt/nextcloud" = {
-    device = "https://cloud.h4k0n.dev/remote.php/webdav";
-    fsType = "davfs";
-    options = [
-      "noauto" # Don't mount at boot
-      "x-systemd.automount" # Mount on first access
-      "rw"
-      "_netdev"
-      "uid=1000"
-      "gid=100"
-      "umask=0022"
-      "nofail"
-    ];
-  };
+  '';
 
   fileSystems."/mnt/ssd" = {
     device = "/dev/disk/by-uuid/2E447A3E447A093B";

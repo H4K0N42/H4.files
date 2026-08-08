@@ -67,6 +67,10 @@
       android-tools
       xwayland-satellite
       kdePackages.polkit-kde-agent-1
+      ddcutil
+      lm_sensors
+      pciutils
+      nodejs
     ])
     ++ [
       unstable.protonplus

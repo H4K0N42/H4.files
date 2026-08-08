@@ -23,4 +23,6 @@ spawn-sh-at-startup "gpu-screen-recorder -w DP-3 -c mp4 -k h265 -s 2560x1440 -f 
 
 spawn-sh-at-startup "sleep 5; /nix/store/$(ls -la /nix/store | grep 'polkit-kde-agent' | grep '^d' | awk '{print $9}')/libexec/polkit-kde-authentication-agent-1"
 
-spawn-sh-at-startup "python /home/hagen/scripts/external/niri_tweaks/niri_tilemod.py"
+spawn-sh-at-startup "python /home/hagen/H4.files/scripts/external/niri_tweaks/niri_tilemod.py"
+spawn-at-startup "beeper"
+spawn-sh-at-startup "flatpak run me.amankhanna.opendeck --hide"

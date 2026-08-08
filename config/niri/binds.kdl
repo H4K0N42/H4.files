@@ -247,8 +247,8 @@ binds {
     // moving the mouse or pressing any other key.
     Super+Shift+P { power-off-monitors; }
 
-    Super+N repeat=false { spawn-sh "code /home/hagen/.local/share/quicklink/"; }
-    Super+Shift+N repeat=false { spawn-sh "zeditor /home/hagen/.local/share/quicklink/"; }
+    Super+N repeat=false { spawn-sh "zeditor /home/hagen/.local/share/quicklink/"; }
+    Super+Shift+N repeat=false { spawn-sh "code /home/hagen/.local/share/quicklink/"; }
     Super+Q repeat=false { spawn "zen-beta"; }
     Super+O repeat=false { spawn-sh "scrcpy --render-driver=opengl"; }
     Super+S repeat=false { spawn-sh "ghostty --title='Soundboard' --background-opacity=0.5 -e bash ~/scripts/soundboard/quick.sh"; }
