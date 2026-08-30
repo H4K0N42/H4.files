@@ -114,7 +114,24 @@ window-rule {
     open-on-output "DP-3"
     open-floating true
     open-focused true
+    block-out-from "screencast"
 }
+// layer-rule {
+//     match namespace="vicinae"
+//     shadow {
+//         on
+//         softness 0
+//         spread 2
+//         offset x=0 y=0
+//         color "#0096ffee"     // from="#0096ffee" to="#9600ffee"
+//         }
+//     geometry-corner-radius 12
+//     background-effect {
+//         xray false
+//     }
+//     block-out-from "screencast"
+// }
+
 
 window-rule {
     match is-window-cast-target=true

@@ -10,11 +10,12 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vicinae.url = "github:vicinaehq/vicinae";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
         # IMPORTANT: To ensure compatibility with the latest Firefox version, use nixpkgs-unstable.
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         home-manager.follows = "home-manager";
       };
     };
@@ -23,9 +24,10 @@
   outputs =
     {
       self,
-      nixpkgs,
       home-manager,
+      nixpkgs,
       nixpkgs-unstable,
+      vicinae,
       ...
     }@inputs:
     let
@@ -43,6 +45,7 @@
       homeConfigurations."hagen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
+          vicinae.homeManagerModules.default
           ./home.nix
         ];
         extraSpecialArgs = {
