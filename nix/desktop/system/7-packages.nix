@@ -71,6 +71,7 @@
       lm_sensors
       pciutils
       nodejs
+      mullvad-vpn
     ])
     ++ [
       unstable.protonplus
@@ -141,7 +142,8 @@
 
     yubikey-agent.enable = true;
     pcscd.enable = true;
-
+    fwupd.enable = true;
+    mullvad-vpn.enable = true;
     flatpak.enable = true;
 
     kmscon = {
@@ -163,7 +165,6 @@
       ];
       startWhenNeeded = true;
     };
-    fwupd.enable = true;
 
     hardware.openrgb = {
       enable = true;

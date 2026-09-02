@@ -199,10 +199,7 @@
                     "unreadBadgeColor": "secondary"
                 },
                 {
-                    "displayMode": "alwaysShow",
-                    "iconColor": "none",
-                    "id": "VPN",
-                    "textColor": "none"
+                    "id": "plugin:mullvad"
                 },
                 {
                     "clockColor": "none",

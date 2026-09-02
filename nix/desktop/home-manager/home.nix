@@ -123,8 +123,6 @@ in
       meld
       remmina
       nwg-look
-      mullvad-vpn
-      mullvad-browser
       neovim
       lazygit
       dig
@@ -151,6 +149,7 @@ in
       xrandr
       beeper
       iftop
+      claude-code
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
