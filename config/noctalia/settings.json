@@ -199,6 +199,19 @@
                     "unreadBadgeColor": "secondary"
                 },
                 {
+                    "defaultSettings": {
+                        "clickAction": "panel",
+                        "compactMode": false,
+                        "confirmDisconnectInLockdown": true,
+                        "expiryWarningDays": 7,
+                        "favoriteCountries": [
+                        ],
+                        "refreshInterval": 3000,
+                        "relayClickConnects": true,
+                        "showCityName": false,
+                        "showCountryFlag": true,
+                        "showIp": false
+                    },
                     "id": "plugin:mullvad"
                 },
                 {

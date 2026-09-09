@@ -58,7 +58,6 @@ in
       kiwix
       rustup
       mission-center
-      appimage-run
       wl-clipboard
       slurp
       audacity

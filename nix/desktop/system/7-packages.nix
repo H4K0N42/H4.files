@@ -21,7 +21,6 @@
       bluez
       bluez-tools
       wireplumber
-      appimage-run
       mesa
       vulkan-loader
       docker
@@ -187,6 +186,11 @@
 
     niri.enable = true;
     xwayland.enable = true;
+
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
 
     nix-ld = {
       enable = true;

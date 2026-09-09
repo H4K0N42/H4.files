@@ -11,6 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vicinae.url = "github:vicinaehq/vicinae";
+    affinity-nix.url = "github:mrshmllow/affinity-nix";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
