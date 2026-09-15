@@ -67,7 +67,6 @@
 
   nix = {
     settings = {
-      auto-optimise-store = true;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -86,19 +85,6 @@
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
       ];
-    };
-
-    gc = {
-      automatic = false;
-      dates = "daily";
-      persistent = true;
-      options = "--delete-older-than 7d";
-    };
-
-    optimise = {
-      automatic = true;
-      dates = [ "daily" ];
-      persistent = true;
     };
   };
 
