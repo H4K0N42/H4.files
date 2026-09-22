@@ -34,7 +34,6 @@
     extraModprobeConfig = ''
       options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
     '';
-    blacklistedKernelModules = [ "nouveau" ];
 
     kernel.sysctl = {
       "vm.swappiness" = 10;
@@ -44,6 +43,8 @@
   hardware.enableAllFirmware = true;
 
   systemd.network.wait-online.enable = false;
+  systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [ ];
+
   systemd.services.docker.wantedBy = lib.mkForce [ ];
   systemd.sockets.docker = {
     enable = true;

@@ -135,6 +135,24 @@
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
       #media-session.enable = true;
+
+      # The USB codec's capture node outranks its playback node as graph driver
+      # (priority.driver 2109 vs 1109). gpu-screen-recorder + the soundboard
+      # loopback join capture and playback into one graph, so playback ends up a
+      # follower and gets adaptively resampled against the mic's jittery
+      # full-speed USB clock -> intermittent distortion. Let playback drive.
+      wireplumber.extraConfig."51-usb-codec-driver" = {
+        "monitor.alsa.rules" = [
+          {
+            matches = [
+              {
+                "node.name" = "alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00.analog-stereo-output";
+              }
+            ];
+            actions.update-props."priority.driver" = 3000;
+          }
+        ];
+      };
     };
 
     gnome.gnome-keyring.enable = true;
@@ -174,6 +192,8 @@
 
   # Programs
   programs = {
+
+    k3b.enable = true;
 
     nh = {
       enable = true;

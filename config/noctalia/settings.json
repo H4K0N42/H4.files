@@ -174,7 +174,8 @@
                     "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
-                        "steam"
+                        "steam",
+                        "tray-icon tray app tray"
                     ]
                 },
                 {
