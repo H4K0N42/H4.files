@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
     ./1-config.nix
     ./2-boot.nix
-    ./3-nvidia.nix
+    ./amd.nix
     ./4-devices.nix
     ./5-network.nix
     ./6-locale.nix

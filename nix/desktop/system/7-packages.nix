@@ -33,7 +33,6 @@
       hplipWithPlugin
       spice-gtk
       ghostty
-      cudatoolkit
       pinentry-qt
       fastfetch
       htop
@@ -283,12 +282,8 @@
     obs-studio = {
       enable = true;
       enableVirtualCamera = true;
-      package = (
-        pkgs.obs-studio.override {
-          cudaSupport = true;
-        }
-      );
       plugins = with pkgs.obs-studio-plugins; [
+        obs-vaapi #optional AMD hardware acceleration
         wlrobs
         obs-vkcapture
         obs-pipewire-audio-capture
