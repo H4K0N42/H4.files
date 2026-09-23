@@ -1,5 +1,5 @@
 workspace "gaming" {
-    open-on-output "DP-3"
+    open-on-output "DP-1"
     layout {
         always-center-single-column
         preset-column-widths { proportion 1.0; }
@@ -117,7 +117,7 @@ window-rule {
 window-rule {
     match app-id="vicinae"
 
-    open-on-output "DP-3"
+    open-on-output "DP-1"
     open-floating true
     open-focused true
     block-out-from "screencast"
