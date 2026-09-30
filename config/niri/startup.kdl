@@ -2,6 +2,7 @@
 spawn-sh-at-startup "noctalia-shell -d"
 spawn-sh-at-startup "com.artemis_rgb.Artemis --minimized"
 spawn-sh-at-startup "bash /home/hagen/scripts/midivol/run.sh"
+spawn-sh-at-startup "bash /home/hagen/scripts/edgewarp/run.sh"
 spawn-sh-at-startup "cd /home/hagen/docker/webping/ && docker compose up -d"
 spawn-sh-at-startup "bash /home/hagen/scripts/gsr_wrapper.sh"
 spawn-sh-at-startup "gpu-screen-recorder -w DP-1 -c mp4 -k h265 -s 2560x1440 -f 30 -a 'default_output|app-inverse:Chromium|app-inverse:WEBRTC VoiceEngine|app-inverse:Zen' -a 'app:WEBRTC VoiceEngine'  -a 'app:Zen' -a 'default_input' -q high -r 180 -o /home/hagen/Videos/Clips"
