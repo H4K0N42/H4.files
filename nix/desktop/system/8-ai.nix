@@ -2,7 +2,7 @@
 {
   services = {
     ollama = {
-      enable = false;
+      enable = true;
       package = pkgs.ollama-rocm;
       host = "0.0.0.0";
       models = "/mnt/hdd/AI/linux/ollama/models";

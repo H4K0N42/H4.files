@@ -9,7 +9,7 @@ spawn-sh-at-startup "python /home/hagen/H4.files/scripts/external/niri_tweaks/ni
 spawn-sh-at-startup "sleep 2; steam -silent"
 spawn-sh-at-startup "sleep 2; niri msg action focus-monitor DP-2 && niri msg action focus-workspace 2 && niri msg action focus-monitor DP-1 && niri msg action focus-workspace 2 && bash /home/hagen/scripts/update.sh"
 spawn-sh-at-startup "sleep 3; com.github.wwmm.easyeffects -w"
-spawn-sh-at-startup "sleep 3; bluetoothctl connect 2C:BE:EB:4B:F9:90"
+spawn-sh-at-startup "sleep 3; bluetoothctl connect 2C:BE:EB:4A:22:1A"
 spawn-sh-at-startup "sleep 5; eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)"
 spawn-sh-at-startup "sleep 5; /nix/store/$(ls -la /nix/store | grep 'polkit-kde-agent' | grep '^d' | awk '{print $9}')/libexec/polkit-kde-authentication-agent-1"
 spawn-sh-at-startup "sleep 5; bash /home/hagen/scripts/soundboard/run.sh"

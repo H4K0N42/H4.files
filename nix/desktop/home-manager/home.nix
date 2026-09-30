@@ -6,6 +6,25 @@
 }:
 let
   dots = builtins.toPath ../../..;
+
+  # LM Studio's ROCm backend links against the ROCm libs it downloads into
+  # ~/.lmstudio/extensions/backends/vendor, but nothing puts that dir on the
+  # loader path, and those libs need libelf/libzstd which the AppImage FHS lacks.
+  lmstudio-rocm = pkgs.symlinkJoin {
+    name = "lmstudio-rocm";
+    paths = [ pkgs.lmstudio ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/lm-studio \
+        --prefix LD_LIBRARY_PATH : ${
+          pkgs.lib.makeLibraryPath [
+            pkgs.elfutils
+            pkgs.zstd
+          ]
+        } \
+        --run 'for d in "$HOME"/.lmstudio/extensions/backends/vendor/linux-llama-rocm-vendor-*; do [ -d "$d" ] && export LD_LIBRARY_PATH="$d''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; done'
+    '';
+  };
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -128,7 +147,7 @@ in
       teamspeak6-client
       motrix
       osu-lazer-bin
-      lmstudio
+      lmstudio-rocm
       zrythm
       bottles
       lmms
@@ -148,7 +167,7 @@ in
       xrandr
       beeper
       iftop
-      claude-code
+      unigine-superposition
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];
       })
@@ -161,6 +180,7 @@ in
       unstable.heroic
       unstable.badlion-client
       unstable.yt-dlp
+      unstable.claude-code
       (unstable.discord.override {
         withVencord = true;
       })
