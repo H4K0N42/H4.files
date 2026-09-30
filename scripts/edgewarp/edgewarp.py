@@ -11,8 +11,9 @@ Needs the two outputs to NOT be adjacent in niri (leave a gap in outputs.kdl),
 otherwise niri moves the cursor across by itself before a strip can catch it.
 
 The gap blocks dragging windows across (the strips get no events during a
-grab), so while Super + left mouse button is held (niri's Mod+drag) the upper
-output is temporarily moved flush against the lower one, and put back on release.
+grab), so while Super + left mouse button is held (niri's Mod+drag) the output
+NOT under the cursor is temporarily moved flush against the other one, and put
+back on release.
 """
 
 import fcntl
@@ -105,7 +106,7 @@ class DragBridge:
         self.fds: dict[str, int] = {}
         self.keyboards: list[str] = []
         self.mice: list[str] = []
-        self.gap_pos: tuple[int, int] | None = None  # set while bridged
+        self.moved: tuple[str, tuple[int, int]] | None = None  # (output, original pos) while bridged
         threading.Thread(target=self.run, daemon=True).start()
 
     def rescan(self):
@@ -126,21 +127,29 @@ class DragBridge:
         return any(keys_down(self.fds[p], *codes) for p in devices if p in self.fds)
 
     def bridge(self):
+        # Moving the output under the cursor would leave the cursor in the gap,
+        # and niri then drops it in the middle of the other output. So move the
+        # other one. The grabbed window got focus with the click, so the focused
+        # output is the one under the cursor.
         outs = niri_outputs()
         upper, lower = outs[UPPER], outs[LOWER]
-        self.gap_pos = (upper["x"], upper["y"])
-        x = lower["x"] + (lower["width"] - upper["width"]) // 2
-        set_position(UPPER, x, lower["y"] - upper["height"])
+        dx = (lower["width"] - upper["width"]) // 2
+        if focused_output() == UPPER:
+            self.moved = (LOWER, (lower["x"], lower["y"]))
+            set_position(LOWER, upper["x"] - dx, upper["y"] + upper["height"])
+        else:
+            self.moved = (UPPER, (upper["x"], upper["y"]))
+            set_position(UPPER, lower["x"] + dx, lower["y"] - upper["height"])
 
     def unbridge(self):
-        # Moving UPPER away would leave a cursor that is on it in the gap, and
-        # niri then drops it in the middle of LOWER. So find out where it is
-        # first, and put it back on UPPER afterwards.
-        pos = self.probe_cursor(UPPER)
-        set_position(UPPER, *self.gap_pos)
-        self.gap_pos = None
+        # Same problem in reverse: the drag may have ended on the moved output.
+        # The grab is over now, so the cursor can be located; put it back after.
+        output, original = self.moved
+        pos = self.probe_cursor(output)
+        set_position(output, *original)
+        self.moved = None
         if pos is not None:
-            self.wl.warp(UPPER, *pos)
+            self.wl.warp(output, *pos)
 
     def probe_cursor(self, output: str, timeout: float = 0.1) -> tuple[float, float] | None:
         """Cursor position on `output` via a short-lived full-screen overlay."""
@@ -179,7 +188,7 @@ class DragBridge:
         last_scan = time.monotonic()
         while True:
             super_held = self.pressed(self.keyboards, KEY_LEFTMETA, KEY_RIGHTMETA)
-            if self.gap_pos is not None:
+            if self.moved is not None:
                 # bridged: hold until the drag ends, Super may be let go earlier
                 if not self.pressed(self.mice, BTN_LEFT):
                     self.unbridge()
@@ -203,6 +212,14 @@ class DragBridge:
             if time.monotonic() - last_scan > RESCAN_INTERVAL:
                 self.rescan()
                 last_scan = time.monotonic()
+
+
+def focused_output() -> str | None:
+    out = subprocess.run(["niri", "msg", "--json", "focused-output"], capture_output=True, text=True).stdout
+    try:
+        return json.loads(out)["name"]
+    except (ValueError, TypeError, KeyError):
+        return None
 
 
 def set_position(output: str, x: int, y: int):
