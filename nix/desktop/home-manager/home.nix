@@ -167,6 +167,8 @@ in
       xrandr
       beeper
       iftop
+      iotop
+      gotop
       unigine-superposition
       (inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default.override {
         nativeMessagingHosts = [ pkgs.firefoxpwa ];

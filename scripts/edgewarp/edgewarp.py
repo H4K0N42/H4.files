@@ -7,6 +7,9 @@ pushed against a strip (seen through relative-pointer, since the cursor itself
 is clamped), it is warped via a virtual pointer to the same relative x on the
 other monitor.
 
+Strips sit on the top layer, so a fullscreen window covers them and crossing
+is off on that output while it's fullscreen (keeps games' pointer capture).
+
 Needs the two outputs to NOT be adjacent in niri (leave a gap in outputs.kdl),
 otherwise niri moves the cursor across by itself before a strip can catch it.
 
@@ -261,12 +264,10 @@ class WaylandClient:
         else:
             self.globals[interface] = (name, version)
 
-    def layer_surface(self, output, anchor, height, on_configured=None):
-        """Transparent overlay layer surface; height 0 = full output."""
+    def layer_surface(self, output, anchor, height, on_configured=None, shell_layer=ZwlrLayerShellV1.layer.overlay):
+        """Transparent layer surface; height 0 = full output."""
         surface = self.compositor.create_surface()
-        layer = self.layer_shell.get_layer_surface(
-            surface, self.outputs[output], ZwlrLayerShellV1.layer.overlay, "edgewarp"
-        )
+        layer = self.layer_shell.get_layer_surface(surface, self.outputs[output], shell_layer, "edgewarp")
         layer.set_anchor(anchor)
         layer.set_size(0, height)
         layer.set_exclusive_zone(-1)  # sit on the very edge, ignore the bar's zone
@@ -341,7 +342,12 @@ class EdgeWarp(WaylandClient):
 
     def make_strip(self, output, target, edge, direction):
         anchor = ZwlrLayerSurfaceV1.anchor
-        surface, _ = self.layer_surface(output, edge | anchor.left | anchor.right, 1)
+        # top, not overlay: niri draws fullscreen windows above the top layer, so
+        # a fullscreen game keeps the pointer at the edge instead of losing it to
+        # the strip (and getting it warped away)
+        surface, _ = self.layer_surface(
+            output, edge | anchor.left | anchor.right, 1, shell_layer=ZwlrLayerShellV1.layer.top
+        )
         # (output it sits on, output it warps to, push direction)
         surface.user_data = (output, target, direction)
 
