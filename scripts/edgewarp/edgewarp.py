@@ -1,30 +1,24 @@
 """Physically correct cursor crossing between two stacked monitors under niri.
 
 niri maps the cursor through logical pixels, so a 1440p and a 1080p panel of
-the same physical width don't line up at their shared edge. This puts an
-invisible 1 px layer-shell strip on the touching edges. When the cursor is
-pushed against a strip (seen through relative-pointer, since the cursor itself
-is clamped), it is warped via a virtual pointer to the same relative x on the
-other monitor.
+the same physical width don't line up at their shared edge. The outputs touch
+in outputs.kdl, so niri moves the cursor across by itself; this puts an
+invisible STRIP px tall layer-shell strip on both touching edges, and when the
+cursor leaves a strip through the edge, it is warped via a virtual pointer to
+the same relative x on the other monitor, keeping its y there. Where the edge
+doesn't touch the other monitor (the outer parts of the wider one), niri holds
+the cursor on the edge row, and pushing against it warps too.
+
+Best effort: a client only sees the cursor while it's over its own surfaces, so
+whether and where it crossed is extrapolated from the last motion on the strip.
 
 Strips sit on the top layer, so a fullscreen window covers them and crossing
 is off on that output while it's fullscreen (keeps games' pointer capture).
-
-Needs the two outputs to NOT be adjacent in niri (leave a gap in outputs.kdl),
-otherwise niri moves the cursor across by itself before a strip can catch it.
-
-The gap blocks dragging windows across (the strips get no events during a
-grab), so while Super + left mouse button is held (niri's Mod+drag) the output
-NOT under the cursor is temporarily moved flush against the other one, and put
-back on release.
 """
 
-import fcntl
 import json
 import os
-import select
 import subprocess
-import threading
 import time
 
 from pywayland.client import Display
@@ -38,13 +32,9 @@ from wlproto.wlr_virtual_pointer_unstable_v1 import ZwlrVirtualPointerManagerV1
 UPPER = "DP-2"
 LOWER = "DP-1"
 
-CURSOR_SHAPE_DEFAULT = 1
+STRIP = 10  # px; tall enough that a fast flick still lands on it once
 
-KEY_LEFTMETA, KEY_RIGHTMETA, BTN_LEFT = 125, 126, 272
-KEY_BITMAP_BYTES = 96  # KEY_MAX 0x2ff
-EVIOCGKEY = (2 << 30) | (KEY_BITMAP_BYTES << 16) | (ord("E") << 8) | 0x18
-BUTTON_POLL = 0.01     # while Super is held
-RESCAN_INTERVAL = 5    # look for replugged keyboards/mice
+CURSOR_SHAPE_DEFAULT = 1
 
 
 def niri_outputs() -> dict[str, dict]:
@@ -67,172 +57,7 @@ def to_panel(logical: dict, x: float, y: float) -> tuple[float, float]:
     raise NotImplementedError(f"transform {logical['transform']}")
 
 
-def input_devices() -> tuple[list[str], list[str]]:
-    """(keyboards with a Super key, devices with a left mouse button) from /proc."""
-    keyboards, mice = [], []
-    with open("/proc/bus/input/devices") as f:
-        blocks = f.read().split("\n\n")
-    for block in blocks:
-        handlers, keybits = [], 0
-        for line in block.splitlines():
-            if line.startswith("H: Handlers="):
-                handlers = line.split("=", 1)[1].split()
-            elif line.startswith("B: KEY="):
-                # space separated 64-bit words, most significant first
-                for word in line.split("=", 1)[1].split():
-                    keybits = (keybits << 64) | int(word, 16)
-        event = next((h for h in handlers if h.startswith("event")), None)
-        if event is None:
-            continue
-        path = f"/dev/input/{event}"
-        if keybits >> KEY_LEFTMETA & 1 or keybits >> KEY_RIGHTMETA & 1:
-            keyboards.append(path)
-        if keybits >> BTN_LEFT & 1:
-            mice.append(path)
-    return keyboards, mice
-
-
-def keys_down(fd: int, *codes: int) -> bool:
-    state = bytearray(KEY_BITMAP_BYTES)
-    try:
-        fcntl.ioctl(fd, EVIOCGKEY, state)
-    except OSError:
-        return False
-    return any(state[c // 8] >> (c % 8) & 1 for c in codes)
-
-
-class DragBridge:
-    """Closes the gap between the outputs while Super + left button is held."""
-
-    def __init__(self):
-        self.wl = WaylandClient()
-        self.fds: dict[str, int] = {}
-        self.keyboards: list[str] = []
-        self.mice: list[str] = []
-        self.moved: tuple[str, tuple[int, int]] | None = None  # (output, original pos) while bridged
-        threading.Thread(target=self.run, daemon=True).start()
-
-    def rescan(self):
-        keyboards, mice = input_devices()
-        for path in set(keyboards) | set(mice):
-            if path not in self.fds:
-                try:
-                    self.fds[path] = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
-                except OSError:
-                    continue
-        for path in list(self.fds):
-            if path not in keyboards and path not in mice:
-                os.close(self.fds.pop(path))
-        self.keyboards = [p for p in keyboards if p in self.fds]
-        self.mice = [p for p in mice if p in self.fds]
-
-    def pressed(self, devices, *codes) -> bool:
-        return any(keys_down(self.fds[p], *codes) for p in devices if p in self.fds)
-
-    def bridge(self):
-        # Moving the output under the cursor would leave the cursor in the gap,
-        # and niri then drops it in the middle of the other output. So move the
-        # other one. The grabbed window got focus with the click, so the focused
-        # output is the one under the cursor.
-        outs = niri_outputs()
-        upper, lower = outs[UPPER], outs[LOWER]
-        dx = (lower["width"] - upper["width"]) // 2
-        if focused_output() == UPPER:
-            self.moved = (LOWER, (lower["x"], lower["y"]))
-            set_position(LOWER, upper["x"] - dx, upper["y"] + upper["height"])
-        else:
-            self.moved = (UPPER, (upper["x"], upper["y"]))
-            set_position(UPPER, lower["x"] + dx, lower["y"] - upper["height"])
-
-    def unbridge(self):
-        # Same problem in reverse: the drag may have ended on the moved output.
-        # The grab is over now, so the cursor can be located; put it back after.
-        output, original = self.moved
-        pos = self.probe_cursor(output)
-        set_position(output, *original)
-        self.moved = None
-        if pos is not None:
-            self.wl.warp(output, *pos)
-
-    def probe_cursor(self, output: str, timeout: float = 0.1) -> tuple[float, float] | None:
-        """Cursor position on `output` via a short-lived full-screen overlay."""
-        wl = self.wl
-        found = []
-        configured = []
-        pointer = wl.seat.get_pointer()
-        pointer.dispatcher["enter"] = lambda p, serial, surf, sx, sy: found.append((sx, sy))
-        anchor = ZwlrLayerSurfaceV1.anchor
-        surface, layer = wl.layer_surface(
-            output, anchor.top | anchor.bottom | anchor.left | anchor.right, 0, lambda: configured.append(1)
-        )
-        deadline = time.monotonic() + timeout
-        nudged = False
-        while not found and time.monotonic() < deadline:
-            wl.display.roundtrip()
-            if configured and not nudged:
-                # niri updates pointer focus on motion; a zero net move triggers it
-                vp = wl.vp_manager.create_virtual_pointer(wl.seat)
-                t = int(time.monotonic() * 1000) & 0xFFFFFFFF
-                vp.motion(t, 1, 0)
-                vp.frame()
-                vp.motion(t, -1, 0)
-                vp.frame()
-                vp.destroy()
-                nudged = True
-            time.sleep(0.005)
-
-        wl.destroy_layer_surface(surface, layer)
-        pointer.release()
-        wl.display.roundtrip()
-        return found[0] if found else None
-
-    def run(self):
-        self.rescan()
-        last_scan = time.monotonic()
-        while True:
-            super_held = self.pressed(self.keyboards, KEY_LEFTMETA, KEY_RIGHTMETA)
-            if self.moved is not None:
-                # bridged: hold until the drag ends, Super may be let go earlier
-                if not self.pressed(self.mice, BTN_LEFT):
-                    self.unbridge()
-                time.sleep(BUTTON_POLL)
-            elif super_held:
-                if self.pressed(self.mice, BTN_LEFT):
-                    self.bridge()
-                time.sleep(BUTTON_POLL)
-            else:
-                # idle: sleep until a key event arrives, no polling
-                fds = [self.fds[p] for p in self.keyboards]
-                ready, _, _ = select.select(fds, [], [], RESCAN_INTERVAL)
-                for fd in ready:
-                    try:
-                        while os.read(fd, 4096):
-                            pass
-                    except BlockingIOError:
-                        pass
-                    except OSError:
-                        pass  # unplugged, next rescan drops it
-            if time.monotonic() - last_scan > RESCAN_INTERVAL:
-                self.rescan()
-                last_scan = time.monotonic()
-
-
-def focused_output() -> str | None:
-    out = subprocess.run(["niri", "msg", "--json", "focused-output"], capture_output=True, text=True).stdout
-    try:
-        return json.loads(out)["name"]
-    except (ValueError, TypeError, KeyError):
-        return None
-
-
-def set_position(output: str, x: int, y: int):
-    subprocess.run(["niri", "msg", "output", output, "position", "set", "--", str(x), str(y)],
-                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-
-class WaylandClient:
-    """One connection with the globals both EdgeWarp and DragBridge need."""
-
+class EdgeWarp:
     def __init__(self):
         self.display = Display()
         self.display.connect()
@@ -249,14 +74,29 @@ class WaylandClient:
         self.seat = registry.bind(g["wl_seat"][0], WlSeat, 5)
         self.layer_shell = registry.bind(g["zwlr_layer_shell_v1"][0], ZwlrLayerShellV1, 4)
         self.vp_manager = registry.bind(g["zwlr_virtual_pointer_manager_v1"][0], ZwlrVirtualPointerManagerV1, 2)
+        rel_manager = registry.bind(g["zwp_relative_pointer_manager_v1"][0], ZwpRelativePointerManagerV1, 1)
+        shape_manager = registry.bind(g["wp_cursor_shape_manager_v1"][0], WpCursorShapeManagerV1, 1)
 
         for name, ver in g["wl_output"]:
             wl_output = registry.bind(name, WlOutput, 4)
             wl_output.dispatcher["name"] = lambda o, n: self.outputs.__setitem__(n, o)
         self.display.roundtrip()
 
+        self.pointer = self.seat.get_pointer()
+        self.pointer.dispatcher["enter"] = self.on_enter
+        self.pointer.dispatcher["leave"] = self.on_leave
+        self.pointer.dispatcher["motion"] = self.on_motion
+        self.relative = rel_manager.get_relative_pointer(self.pointer)
+        self.relative.dispatcher["relative_motion"] = self.on_relative_motion
+        self.cursor_shape = shape_manager.get_pointer(self.pointer)
+
         self.keepalive = []
-        self.buffers = {}  # surface -> its current buffer
+        self.make_strip(LOWER, UPPER, ZwlrLayerSurfaceV1.anchor.top, -1)
+        self.make_strip(UPPER, LOWER, ZwlrLayerSurfaceV1.anchor.bottom, +1)
+
+        self.active = None  # strip the cursor is on
+        self.x = self.y = 0.0  # last position on it
+        self.dx = self.dy = 0.0  # last motion on it
 
     def on_global(self, registry, name, interface, version):
         if interface == "wl_output":
@@ -264,12 +104,16 @@ class WaylandClient:
         else:
             self.globals[interface] = (name, version)
 
-    def layer_surface(self, output, anchor, height, on_configured=None, shell_layer=ZwlrLayerShellV1.layer.overlay):
-        """Transparent layer surface; height 0 = full output."""
+    def make_strip(self, output, other, edge, direction):
+        """Transparent strip along `edge` of `output`; `direction` points at `other`."""
+        anchor = ZwlrLayerSurfaceV1.anchor
         surface = self.compositor.create_surface()
-        layer = self.layer_shell.get_layer_surface(surface, self.outputs[output], shell_layer, "edgewarp")
-        layer.set_anchor(anchor)
-        layer.set_size(0, height)
+        # top, not overlay: niri draws fullscreen windows above the top layer
+        layer = self.layer_shell.get_layer_surface(
+            surface, self.outputs[output], ZwlrLayerShellV1.layer.top, "edgewarp"
+        )
+        layer.set_anchor(edge | anchor.left | anchor.right)
+        layer.set_size(0, STRIP)
         layer.set_exclusive_zone(-1)  # sit on the very edge, ignore the bar's zone
         layer.set_keyboard_interactivity(0)
 
@@ -285,27 +129,60 @@ class WaylandClient:
             surface.attach(buffer, 0, 0)
             surface.damage_buffer(0, 0, width, height)
             surface.commit()
-            self.buffers[surface] = buffer
-            if on_configured:
-                on_configured()
+            self.keepalive.append(buffer)
 
         layer.dispatcher["configure"] = configure
         layer.dispatcher["closed"] = lambda l: os._exit(1)
         surface.commit()
+        # (output it sits on, output it warps to, direction towards it)
+        surface.user_data = (output, other, direction)
         self.keepalive += [surface, layer]
-        return surface, layer
 
-    def destroy_layer_surface(self, surface, layer):
-        layer.destroy()
-        surface.destroy()
-        if buffer := self.buffers.pop(surface, None):
-            buffer.destroy()
-        for obj in (surface, layer):
-            self.keepalive.remove(obj)
+    def on_enter(self, pointer, serial, surface, sx, sy):
+        self.active = surface.user_data
+        self.x, self.y = sx, sy
+        self.dx = self.dy = 0.0
+        self.cursor_shape.set_shape(serial, CURSOR_SHAPE_DEFAULT)
 
-    def warp(self, output: str, x: float, y: float):
+    def on_motion(self, pointer, time_ms, sx, sy):
+        self.x, self.y = sx, sy
+
+    def on_relative_motion(self, rel, utime_hi, utime_lo, dx, dy, dx_unaccel, dy_unaccel):
+        self.dx, self.dy = dx, dy
+        if self.active is None:
+            return
+        output, target, direction = self.active
+        # pushing against the edge row where niri won't move the cursor across
+        if self.to_edge(direction) <= 1 and dy * direction > 0:
+            self.active = None
+            self.cross(output, target, direction, 0)
+
+    def on_leave(self, pointer, serial, surface):
+        # The motion that caused the leave goes to whatever is under the cursor
+        # now, so assume it was like the last one we saw.
+        if self.active is None:
+            return
+        output, target, direction = self.active
+        self.active = None
+        to_edge = self.to_edge(direction)
+        if self.dy * direction <= 0 or to_edge > 2 * abs(self.dy) + 2:
+            return  # left back inwards, or something covered the strip
+        # how far past the edge it went, measured into the target
+        self.cross(output, target, direction, max(self.dy * direction - to_edge, 0))
+
+    def to_edge(self, direction) -> float:
+        return STRIP - self.y if direction > 0 else self.y
+
+    def cross(self, output, target, direction, past):
+        outs = niri_outputs()
+        src, dst = outs[output], outs[target]
+        x = min(max((self.x + self.dx) / src["width"], 0), 1) * dst["width"]
+        y = past if direction > 0 else dst["height"] - 1 - past
+        print(f"{output} x={self.x:.0f} -> {target} x={x:.0f} y={y:.0f}", flush=True)
+        self.warp(target, dst, x, y)
+
+    def warp(self, output: str, logical: dict, x: float, y: float):
         """Put the cursor at output-local logical (x, y)."""
-        logical = niri_outputs()[output]
         w, h = logical["width"], logical["height"]
         # a point exactly on the far edge lies outside the output and niri drops
         # the cursor somewhere else
@@ -317,71 +194,10 @@ class WaylandClient:
         vp.destroy()
         self.display.flush()
 
-
-class EdgeWarp(WaylandClient):
-    def __init__(self):
-        super().__init__()
-        self.logical = niri_outputs()
-        g = self.globals
-        rel_manager = self.registry.bind(g["zwp_relative_pointer_manager_v1"][0], ZwpRelativePointerManagerV1, 1)
-        shape_manager = self.registry.bind(g["wp_cursor_shape_manager_v1"][0], WpCursorShapeManagerV1, 1)
-
-        self.pointer = self.seat.get_pointer()
-        self.pointer.dispatcher["enter"] = self.on_enter
-        self.pointer.dispatcher["leave"] = self.on_leave
-        self.pointer.dispatcher["motion"] = self.on_motion
-        self.relative = rel_manager.get_relative_pointer(self.pointer)
-        self.relative.dispatcher["relative_motion"] = self.on_relative_motion
-        self.cursor_shape = shape_manager.get_pointer(self.pointer)
-
-        self.make_strip(LOWER, UPPER, ZwlrLayerSurfaceV1.anchor.top, -1)
-        self.make_strip(UPPER, LOWER, ZwlrLayerSurfaceV1.anchor.bottom, +1)
-
-        self.active = None  # strip the cursor is currently on
-        self.x = 0.0
-
-    def make_strip(self, output, target, edge, direction):
-        anchor = ZwlrLayerSurfaceV1.anchor
-        # top, not overlay: niri draws fullscreen windows above the top layer, so
-        # a fullscreen game keeps the pointer at the edge instead of losing it to
-        # the strip (and getting it warped away)
-        surface, _ = self.layer_surface(
-            output, edge | anchor.left | anchor.right, 1, shell_layer=ZwlrLayerShellV1.layer.top
-        )
-        # (output it sits on, output it warps to, push direction)
-        surface.user_data = (output, target, direction)
-
-    def on_enter(self, pointer, serial, surface, sx, sy):
-        self.active = surface.user_data
-        self.x = sx
-        self.cursor_shape.set_shape(serial, CURSOR_SHAPE_DEFAULT)
-
-    def on_leave(self, pointer, serial, surface):
-        self.active = None
-
-    def on_motion(self, pointer, time_ms, sx, sy):
-        self.x = sx
-
-    def on_relative_motion(self, rel, utime_hi, utime_lo, dx, dy, dx_unaccel, dy_unaccel):
-        if self.active is None:
-            return
-        output, target, direction = self.active
-        if dy * direction <= 0:
-            return
-        self.active = None  # one warp per enter
-
-        src, dst = self.logical[output], self.logical[target]
-        x = self.x / src["width"] * dst["width"]
-        # land just inside the target, past its strip
-        y = dst["height"] - 2 if direction < 0 else 1
-        print(f"{output} x={self.x:.0f} -> {target} x={x:.0f}", flush=True)
-        self.warp(target, x, y)
-
     def run(self):
         while self.display.dispatch(block=True) != -1:
             pass
 
 
 if __name__ == "__main__":
-    DragBridge()
     EdgeWarp().run()

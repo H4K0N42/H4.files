@@ -77,7 +77,7 @@ plugin in `config/noctalia/plugins/mullvad/`.
 Each helper with Python deps is a directory containing `run.sh` + `shell.nix`; `run.sh` does
 `cd /home/hagen/scripts/<name> && nix-shell --run "python3 <name>.py"`. That path is the store copy,
 so **edit the repo, then `nh home switch`, then run** — running from the repo directly will use the
-old code. `midivol` (MIDI fader → per-app PipeWire volume) and `edgewarp` (physically correct cursor
-crossing between the two monitors, replaces the Hyprland-only `movecur`) are launched from
-`config/niri/startup.kdl`; `soundboard/run.sh` builds PipeWire null-sink/loopback routing.
+old code. `midivol` (MIDI fader → per-app PipeWire volume) and `edgewarp` (outputs touch in
+`outputs.kdl`; 1 px strips on the shared edge warp the cursor to the physically matching x after niri
+moves it across) are launched from `config/niri/startup.kdl`; `soundboard/run.sh` builds PipeWire null-sink/loopback routing.
 `scripts/external/niri_tweaks` is a git submodule (upstream `heyoeyo/niri_tweaks`).
