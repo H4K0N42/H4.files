@@ -13,6 +13,9 @@ MIDI_CHANNEL = 0                     # MIDI channel (0-indexed)
 RECONNECT_INTERVAL = 2               # seconds between checks for a (re)plugged device
 FADER_MAX = 100                      # CC value the faders send at the top (not 127)
 WATCH_INTERVAL = 1                   # seconds between checks for new streams
+# a new stream keeps getting its restored level for this long, because some apps
+# (Discord) set their own stream volume shortly after the stream appears
+SETTLE_TIME = 5
 # last position of each fader; the device only sends on movement, so this is
 # what gets applied after a restart and to streams that appear later
 STATE_FILE = os.path.expanduser("~/.local/state/midivol.json")
@@ -84,7 +87,12 @@ def matches(props: dict, matchers: list[tuple[str, str]]) -> bool:
     return any(needle in str(props.get(prop, "")).lower() for prop, needle in matchers)
 
 
-def matching_streams(target) -> list[int]:
+def app_key(props: dict) -> str:
+    """What the focused fader remembers its level under."""
+    return str(props.get("application.process.binary") or props.get("application.name") or "").lower()
+
+
+def matching_streams(target) -> list[tuple[int, dict]]:
     streams = audio_streams()
     if target == FOCUSED:
         window = focused_window()
@@ -101,9 +109,9 @@ def matching_streams(target) -> list[int]:
             if (pid and window.get("pid") in ancestors(int(pid))) or (
                 app_id and app_id in str(props.get("application.name", "")).lower()
             ):
-                ids.append(node_id)
+                ids.append((node_id, props))
         return ids
-    return [node_id for node_id, props in streams if matches(props, target)]
+    return [(node_id, props) for node_id, props in streams if matches(props, target)]
 
 
 def fader_to_db(value: int) -> float | None:
@@ -136,34 +144,44 @@ def apply(cc: int, value: int):
         log.info(f"Set MASTER volume to {level}")
         return
 
-    ids = matching_streams(target)
-    if not ids:
+    streams = matching_streams(target)
+    if not streams:
         log.warning(f"CC {cc}: no matching stream")
         return
-    for node_id in ids:
+    for node_id, _ in streams:
         set_volume(str(node_id), volume)
-    log.info(f"CC {cc}: set {level} on streams {ids}")
+    if target == FOCUSED:
+        state.remember_apps({app_key(props): value for _, props in streams if app_key(props)})
+    log.info(f"CC {cc}: set {level} on streams {[node_id for node_id, _ in streams]}")
 
 
 class FaderState:
-    """Last known value per CC, persisted across restarts."""
+    """Last known value per CC, and per app for the focused fader, persisted
+    across restarts."""
 
     def __init__(self):
         self.lock = threading.Lock()
         try:
             with open(STATE_FILE) as f:
-                self.values = {int(cc): v for cc, v in json.load(f).items() if int(cc) in FADERS}
-        except (OSError, ValueError):
-            self.values = {}
+                data = json.load(f)
+            self.apps = data.pop("apps", {})
+            self.values = {int(cc): v for cc, v in data.items() if int(cc) in FADERS}
+        except (OSError, ValueError, AttributeError):
+            self.values, self.apps = {}, {}
 
-    def get(self) -> dict[int, int]:
+    def get(self) -> tuple[dict[int, int], dict[str, int]]:
         with self.lock:
-            return dict(self.values)
+            return dict(self.values), dict(self.apps)
+
+    def remember_apps(self, apps: dict[str, int]):
+        """Saved with the next update()."""
+        with self.lock:
+            self.apps.update(apps)
 
     def update(self, batch: dict[int, int]):
         with self.lock:
             self.values.update({cc: v for cc, v in batch.items() if FADERS[cc] != FOCUSED})
-            values = dict(self.values)
+            values = {**self.values, "apps": self.apps}
         os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
         tmp = STATE_FILE + ".tmp"
         with open(tmp, "w") as f:
@@ -176,24 +194,35 @@ state = FaderState()
 
 def watch_streams():
     """Give streams that show up later (app restarted, new tab playing, ...) the
-    level of their fader. The first pass also restores everything at startup."""
-    known: set[int] | None = None
+    level of their fader, or the level the focused fader last gave that app.
+    The first pass also restores everything at startup."""
+    first_seen: dict[int, float] | None = None
     while True:
         streams = audio_streams()
-        values = state.get()
-        if known is None and 0 in values and FADERS[0] == MASTER:
-            try:
-                apply(0, values[0])
-            except Exception:
-                log.exception("failed to restore master")
+        values, apps = state.get()
+        now = time.monotonic()
+        if first_seen is None:
+            first_seen = {}
+            if 0 in values and FADERS[0] == MASTER:
+                try:
+                    apply(0, values[0])
+                except Exception:
+                    log.exception("failed to restore master")
         for node_id, props in streams:
-            if known is not None and node_id in known:
+            new = node_id not in first_seen
+            first_seen.setdefault(node_id, now)
+            if now - first_seen[node_id] > SETTLE_TIME:
                 continue
-            for cc, target in FADERS.items():
-                if isinstance(target, list) and cc in values and matches(props, target):
-                    set_volume(str(node_id), db_to_wpctl(fader_to_db(values[cc])))
-                    log.info(f"CC {cc}: restored value {values[cc]} on new stream {node_id}")
-        known = {node_id for node_id, _ in streams}
+            dedicated = [cc for cc, t in FADERS.items() if isinstance(t, list) and matches(props, t)]
+            if dedicated:
+                restore = [(cc, values[cc]) for cc in dedicated if cc in values]
+            else:
+                restore = [("focused", apps[app_key(props)])] if app_key(props) in apps else []
+            for source, value in restore:
+                set_volume(str(node_id), db_to_wpctl(fader_to_db(value)))
+                if new:
+                    log.info(f"{source}: restored value {value} on new stream {node_id}")
+        first_seen = {node_id: first_seen[node_id] for node_id, _ in streams}
         time.sleep(WATCH_INTERVAL)
 
 
