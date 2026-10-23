@@ -7,7 +7,7 @@ MIC_SOURCE="easyeffects_source"
 pactl load-module module-null-sink sink_name=SoundboardSink sink_properties=device.description=SoundboardSink
 
 # Load loopback from your microphone to the virtual sink
-pactl load-module module-loopback source=$MIC_SOURCE sink=SoundboardSink
+pactl load-module module-loopback source=$MIC_SOURCE sink=SoundboardSink sink_input_properties=node.name=soundboard_loopback
 
 # You can add other commands below if you want to route more sources
 

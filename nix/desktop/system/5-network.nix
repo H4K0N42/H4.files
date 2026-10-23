@@ -13,7 +13,7 @@
       "192.168.178.1"
     ];
 
-    interfaces.enp5s0.wakeOnLan.enable = true;
+    interfaces.enp7s0.wakeOnLan.enable = true;
 
     firewall.enable = false;
   };

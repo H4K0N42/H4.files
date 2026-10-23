@@ -281,9 +281,9 @@
 
     obs-studio = {
       enable = true;
-      enableVirtualCamera = true;
+      # enableVirtualCamera = true; # TODO irgendwie geht das nicht
       plugins = with pkgs.obs-studio-plugins; [
-        obs-vaapi #optional AMD hardware acceleration
+        obs-vaapi
         wlrobs
         obs-vkcapture
         obs-pipewire-audio-capture
