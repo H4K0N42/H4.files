@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-gpu-screen-recorder -w DP-3 -c mp4 -k h265 -s 2560x1440 -f 30 \
-  -a 'default_output|app-inverse:Chromium|app-inverse:WEBRTC VoiceEngine|app-inverse:Zen' \
+gpu-screen-recorder -w DP-1 -c mp4 -k av1 -s 2560x1440 -f 60 \
+  -a 'default_output|default_input' \
+  -a 'app-inverse:Chromium|app-inverse:WEBRTC VoiceEngine|app-inverse:Zen|app-inverse:soundboard_loopback' \
   -a 'app:WEBRTC VoiceEngine' \
-  -a 'app:Zen' \
   -a 'default_input' \
-  -q high -r 180 -o /home/hagen/Videos/Clips &
+  -q ultra -ab 256 -r 180 -o /home/hagen/Videos/Clips &
 
 pid=$!
 

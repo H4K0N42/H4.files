@@ -25,6 +25,34 @@ let
         --run 'for d in "$HOME"/.lmstudio/extensions/backends/vendor/linux-llama-rocm-vendor-*; do [ -d "$d" ] && export LD_LIBRARY_PATH="$d''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; done'
     '';
   };
+
+  # nixpkgs builds VLC without its native dav1d decoder, so AV1 falls back to
+  # avcodec's libdav1d wrapper, which deadlocks in VLC 3 (black video).
+  vlc-av1 = pkgs.vlc.overrideAttrs (old: {
+    buildInputs = old.buildInputs ++ [ pkgs.dav1d ];
+  });
+
+  # Minecraft 26.x replaced GLFW with SDL3 and added a Vulkan backend, but the
+  # nixpkgs wrapper's LD_LIBRARY_PATH still only covers GLFW's libs, so the game
+  # finds neither libvulkan nor the X11/Wayland libs SDL dlopens.
+  noriskclient-sdl = unstable.noriskclient-launcher.overrideAttrs (old: {
+    runtimeDependencies =
+      old.runtimeDependencies
+      + ":"
+      + pkgs.lib.makeLibraryPath (
+        with unstable;
+        [
+          vulkan-loader
+          wayland
+          libdecor
+          libxkbcommon
+          libxi
+          libxfixes
+          libxscrnsaver
+          libxtst
+        ]
+      );
+  });
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -98,7 +126,7 @@ in
       clipse
       file-roller
       jq
-      vlc
+      vlc-av1
       trash-cli
       xdg-desktop-portal
       killall
@@ -177,7 +205,7 @@ in
       # (pkgs.writeShellScriptBin "beeper" "exec ${beeper}/bin/beeper --enable-features=UseOzonePlatform --ozone-platform=x11")
     ])
     ++ [
-      unstable.noriskclient-launcher
+      noriskclient-sdl
       unstable.opencode
       unstable.heroic
       unstable.badlion-client
@@ -250,6 +278,7 @@ in
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
     PROTON_ENABLE_WAYLAND = "1";
+    SDL_VIDEO_DRIVER = "wayland";
     NH_OS_FLAKE = "/etc/nixos";
     NH_HOME_FLAKE = "/home/hagen/.config/home-manager";
   };
