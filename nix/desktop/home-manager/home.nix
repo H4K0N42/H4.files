@@ -217,6 +217,21 @@ in
       # unstable.winboat
     ];
 
+  xdg.desktopEntries."NoRisk Launcher" = {
+    name = "NoRiskClient Launcher";
+    comment = "Launcher for NoRiskClient";
+    exec = "env SDL_VIDEODRIVER=wayland noriskclient-launcher-v3";
+    icon = "noriskclient-launcher-v3";
+    terminal = false;
+    type = "Application";
+    categories = [ "Game" ];
+    mimeType = [ "x-scheme-handler/norisk" ];
+    settings = {
+      StartupWMClass = "noriskclient-launcher-v3";
+      Keywords = "nrc;minecraft;mc;";
+    };
+  };
+
   # xdg.desktopEntries.badlion-launcher = {
   #   name = "Badlion Launcher";
   #   genericName = "Badlion Client";
@@ -278,7 +293,6 @@ in
     NIXOS_OZONE_WL = "1";
     TERMINAL = "ghostty";
     PROTON_ENABLE_WAYLAND = "1";
-    SDL_VIDEO_DRIVER = "wayland";
     NH_OS_FLAKE = "/etc/nixos";
     NH_HOME_FLAKE = "/home/hagen/.config/home-manager";
   };
