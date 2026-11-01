@@ -15,6 +15,7 @@
       efiSupport = true;
       device = "nodev"; # Use "nodev" when using EFI
       useOSProber = true;
+      memtest86.enable = true;
 
       gfxmodeEfi = "2560x1440";
       backgroundColor = "#000000";
